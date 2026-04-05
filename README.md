@@ -1,3 +1,22 @@
+# 
+
+# Démarrer la DB
+docker-compose up -d
+
+# Arrêter la DB
+docker-compose down
+
+# Après chaque modif du schema.prisma
+npx prisma migrate dev --name nom_de_la_migration
+
+# Voir ta DB visuellement
+npx prisma studio
+
+# Régénérer le client Prisma (si types pas à jour)
+npx prisma generate
+
+## Next
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

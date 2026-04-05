@@ -1,0 +1,219 @@
+// prisma/schema.prisma
+
+// On dit à Prisma quel "provider" (moteur de DB) on utilise
+// et où trouver l'URL de connexion (dans .env)
+datasource db {
+  provider = "postgresql"
+}
+
+// On dit à Prisma de générer le client TypeScript
+// Ce client est ce qu'on importera dans notre code pour faire des requêtes
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ─────────────────────────────────────────────
+// MODÈLE : User (Utilisateur)
+// ─────────────────────────────────────────────
+// Chaque ligne = une colonne dans la table PostgreSQL
+model User {
+  id            String    @id @default(cuid())  // ID unique auto-généré (ex: "clx123abc")
+  name          String?                          // "?" = optionnel (peut être NULL en DB)
+  email         String?   @unique               // Email unique → pas deux comptes avec le même
+  emailVerified DateTime?                        // Date de vérification email (géré par NextAuth)
+  image         String?                          // URL de la photo de profil
+  password      String?                          // Mot de passe hashé (null si login Facebook)
+  phone         String?                          // Numéro de téléphone
+  createdAt     DateTime  @default(now())        // Date de création automatique
+  updatedAt     DateTime  @updatedAt             // Mis à jour automatiquement par Prisma
+
+  // Relations → un User peut avoir plusieurs de ces éléments
+  accounts      Account[]    // Comptes OAuth (Facebook, Google…)
+  sessions      Session[]    // Sessions actives (géré par NextAuth)
+  annonces      Annonce[]    // Annonces publiées par cet utilisateur
+  sentMessages     Message[] @relation("SentMessages")     // Messages envoyés
+  receivedMessages Message[] @relation("ReceivedMessages") // Messages reçus
+  favorites     Favorite[]   // Annonces mises en favoris
+}
+
+// ─────────────────────────────────────────────
+// MODÈLES NextAuth (obligatoires pour l'auth)
+// ─────────────────────────────────────────────
+// Ces 3 modèles sont imposés par NextAuth + Prisma Adapter
+// Ils gèrent les connexions OAuth (Facebook, etc.) et les sessions
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String              // ex: "facebook", "google"
+  providerAccountId String              // L'ID de l'utilisateur chez Facebook
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // "onDelete: Cascade" → si on supprime le User, ses Account sont supprimés aussi
+
+  @@unique([provider, providerAccountId])
+  // Un compte Facebook ne peut être lié qu'à un seul User
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─────────────────────────────────────────────
+// MODÈLE : Categorie
+// ─────────────────────────────────────────────
+model Categorie {
+  id          String    @id @default(cuid())
+  nom         String    @unique   // ex: "Immobilier", "Véhicules", "Informatique"
+  slug        String    @unique   // ex: "immobilier", "vehicules" (pour les URLs)
+  icone       String?             // Nom de l'icône lucide-react
+  couleur     String?             // Couleur hex pour l'affichage
+  createdAt   DateTime  @default(now())
+
+  annonces    Annonce[]           // Une catégorie contient plusieurs annonces
+  sousCategories SousCategorie[]  // Une catégorie a des sous-catégories
+}
+
+// ─────────────────────────────────────────────
+// MODÈLE : SousCategorie
+// ─────────────────────────────────────────────
+model SousCategorie {
+  id          String    @id @default(cuid())
+  nom         String                          // ex: "Appartements", "Maisons"
+  slug        String                          // ex: "appartements"
+  categorieId String                          // Clé étrangère vers Categorie
+
+  categorie   Categorie @relation(fields: [categorieId], references: [id], onDelete: Cascade)
+  annonces    Annonce[]
+}
+
+// ─────────────────────────────────────────────
+// MODÈLE : Annonce
+// ─────────────────────────────────────────────
+// C'est le modèle central de toute l'application
+model Annonce {
+  id              String        @id @default(cuid())
+  titre           String                              // Titre de l'annonce
+  description     String        @db.Text             // Texte long → @db.Text = TEXT en PostgreSQL
+  prix            Float?                              // Prix (optionnel, ex: "Gratuit")
+  typesPrix       TypePrix      @default(FIXE)        // Enum : FIXE, NEGOCIABLE, GRATUIT, ECHANGE
+  localisation    String                              // Ville / région
+  codePostal      String?                             // Code postal
+  latitude        Float?                              // Pour la carte (étape future)
+  longitude       Float?
+  statut          StatutAnnonce @default(ACTIVE)      // Enum : ACTIVE, VENDUE, EXPIREE, SUPPRIMEE
+  vues            Int           @default(0)           // Compteur de vues
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  expiresAt       DateTime?                           // Date d'expiration de l'annonce
+
+  // Clés étrangères
+  userId          String                              // Qui a publié cette annonce
+  categorieId     String
+  sousCategorieId String?                             // Optionnel
+
+  // Relations
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categorie       Categorie     @relation(fields: [categorieId], references: [id])
+  sousCategorie   SousCategorie? @relation(fields: [sousCategorieId], references: [id])
+  images          Image[]                             // Une annonce a plusieurs images
+  messages        Message[]                           // Messages liés à cette annonce
+  favorites       Favorite[]                          // Mis en favoris par des users
+
+  // Index pour accélérer les recherches fréquentes
+  @@index([categorieId])
+  @@index([userId])
+  @@index([statut])
+  @@index([localisation])
+}
+
+// ─────────────────────────────────────────────
+// MODÈLE : Image
+// ─────────────────────────────────────────────
+model Image {
+  id         String   @id @default(cuid())
+  url        String                         // URL Cloudinary
+  publicId   String                         // ID Cloudinary (pour pouvoir supprimer l'image)
+  ordre      Int      @default(0)           // Ordre d'affichage (0 = image principale)
+  annonceId  String
+
+  annonce    Annonce  @relation(fields: [annonceId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────
+// MODÈLE : Message
+// ─────────────────────────────────────────────
+model Message {
+  id          String   @id @default(cuid())
+  contenu     String   @db.Text
+  lu          Boolean  @default(false)      // true si le destinataire a lu le message
+  createdAt   DateTime @default(now())
+
+  // Clés étrangères
+  annonceId   String                        // À quelle annonce ce message se rapporte
+  envoyeurId  String                        // Qui envoie
+  destinataireId String                     // Qui reçoit
+
+  annonce     Annonce  @relation(fields: [annonceId], references: [id], onDelete: Cascade)
+  envoyeur    User     @relation("SentMessages", fields: [envoyeurId], references: [id])
+  destinataire User    @relation("ReceivedMessages", fields: [destinataireId], references: [id])
+
+  @@index([annonceId])
+  @@index([envoyeurId])
+  @@index([destinataireId])
+}
+
+// ─────────────────────────────────────────────
+// MODÈLE : Favorite
+// ─────────────────────────────────────────────
+model Favorite {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  userId    String
+  annonceId String
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  annonce   Annonce  @relation(fields: [annonceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, annonceId])
+  // Un user ne peut mettre en favori une annonce qu'une seule fois
+}
+
+// ─────────────────────────────────────────────
+// ENUMS — valeurs prédéfinies pour certains champs
+// ─────────────────────────────────────────────
+
+enum TypePrix {
+  FIXE        // Prix fixe
+  NEGOCIABLE  // Prix négociable
+  GRATUIT     // Gratuit
+  ECHANGE     // Échange
+}
+
+enum StatutAnnonce {
+  ACTIVE      // Visible par tous
+  VENDUE      // Marquée comme vendue
+  EXPIREE     // Plus affichée (date dépassée)
+  SUPPRIMEE   // Supprimée par l'utilisateur
+}
