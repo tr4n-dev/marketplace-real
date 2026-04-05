@@ -1,0 +1,96 @@
+import Link from "next/link"
+import Image from "next/image"
+import { MapPin, Eye } from "lucide-react"
+import type { AnnonceCard } from "@/lib/annonces"
+
+function formatPrix(prix: number | null, typePrix: string): string {
+  if (typePrix === "GRATUIT") return "Maimbo / Gratuit"
+  if (typePrix === "ECHANGE") return "Fifanakalozana"
+  if (!prix) return "Prix non renseigné"
+  return new Intl.NumberFormat("fr-MG", {
+    style: "currency",
+    currency: "MGA",      // Ariary malgache
+    maximumFractionDigits: 0,
+  }).format(prix)
+}
+
+function formatDateRelative(date: Date): string {
+  const diffMs = Date.now() - new Date(date).getTime()
+  const diffH = Math.floor(diffMs / 3600000)
+  const diffJ = Math.floor(diffH / 24)
+  if (diffH < 1) return "À l'instant"
+  if (diffH < 24) return `Il y a ${diffH}h`
+  if (diffJ < 7) return `Il y a ${diffJ}j`
+  return new Intl.DateTimeFormat("fr-FR").format(new Date(date))
+}
+
+export function AnnonceCard({ annonce }: { annonce: AnnonceCard }) {
+  const imagePrincipale = annonce.images[0]
+  const estGratuit = annonce.typesPrix === "GRATUIT"
+
+  return (
+    <Link
+      href={`/annonces/${annonce.id}`}
+      className="group card flex flex-col overflow-hidden"
+    >
+      {/* Image */}
+      <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+        {imagePrincipale ? (
+          <Image
+            src={imagePrincipale.url}
+            alt={annonce.titre}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-5xl bg-gray-50">
+            📷
+          </div>
+        )}
+
+        {/* Badge catégorie */}
+        <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2 py-1 rounded-full text-gray-700 border border-gray-100">
+          {annonce.categorie.nom}
+        </span>
+
+        {/* Badge gratuit */}
+        {estGratuit && (
+          <span className="absolute top-2 right-2 bg-turquoise text-white text-xs font-bold px-2 py-1 rounded-full">
+            Maimbo
+          </span>
+        )}
+      </div>
+
+      {/* Contenu */}
+      <div className="p-3 flex flex-col gap-1.5 flex-1">
+        <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-turquoise transition-colors">
+          {annonce.titre}
+        </h3>
+
+        {/* Prix */}
+        <p className={`font-bold text-base ${estGratuit ? "text-turquoise" : "text-gray-900"}`}>
+          {formatPrix(annonce.prix, annonce.typesPrix)}
+          {annonce.typesPrix === "NEGOCIABLE" && (
+            <span className="text-xs font-normal text-gray-400 ml-1">(négociable)</span>
+          )}
+        </p>
+
+        {/* Localisation + vues + date */}
+        <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-50 text-xs text-gray-400">
+          <span className="flex items-center gap-1">
+            <MapPin className="w-3 h-3 text-turquoise" />
+            {annonce.localisation}
+          </span>
+          <div className="flex items-center gap-2">
+            <span className="flex items-center gap-1">
+              <Eye className="w-3 h-3" />
+              {annonce.vues}
+            </span>
+            <span>{formatDateRelative(annonce.createdAt)}</span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
+}

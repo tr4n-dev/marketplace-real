@@ -1,3 +1,44 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind v4 — nouvelle syntaxe */
+@import "tailwindcss";
+
+/* Définition des couleurs custom — remplace tailwind.config.ts */
+@theme {
+  --color-primary: #FFD700;
+  --color-primary-hover: #F0C800;
+  --color-primary-light: #FFF8CC;
+
+  --color-turquoise: #0ABFBC;
+  --color-turquoise-hover: #09ADAA;
+  --color-turquoise-light: #E0F7F7;
+
+  --color-foret: #1A6B3C;
+  --color-fond: #FAFAF8;
+}
+
+/* Styles de base */
+@layer base {
+  body {
+    background-color: var(--color-fond);
+    color: #1A1A1A;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: var(--color-turquoise); border-radius: 3px; }
+}
+
+/* Composants réutilisables */
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-hover text-gray-900 font-semibold px-4 py-2 rounded-lg transition-colors duration-200;
+  }
+
+  .btn-turquoise {
+    @apply bg-turquoise hover:bg-turquoise-hover text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-xl border border-gray-100 shadow
+  }
+
+}
