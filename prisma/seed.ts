@@ -2,8 +2,15 @@
 // Ce script remplit la DB avec des données initiales (catégories, sous-catégories)
 // On l'exécute une seule fois avec : npx prisma db seed
 
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import "dotenv/config"
+import { PrismaClient } from "../generated/prisma/client"
+
+import { PrismaPg } from "@prisma/adapter-pg"
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!
+})
+const prisma = new PrismaClient({ adapter })
 
 async function main() {
   console.log("🌱 Seeding la base de données...");

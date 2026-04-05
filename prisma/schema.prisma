@@ -9,7 +9,8 @@ datasource db {
 // On dit à Prisma de générer le client TypeScript
 // Ce client est ce qu'on importera dans notre code pour faire des requêtes
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 // ─────────────────────────────────────────────
@@ -23,6 +24,8 @@ model User {
   emailVerified DateTime?                        // Date de vérification email (géré par NextAuth)
   image         String?                          // URL de la photo de profil
   password      String?                          // Mot de passe hashé (null si login Facebook)
+  city          String?
+  region        String?
   phone         String?                          // Numéro de téléphone
   createdAt     DateTime  @default(now())        // Date de création automatique
   updatedAt     DateTime  @updatedAt             // Mis à jour automatiquement par Prisma

@@ -9,6 +9,9 @@ docker-compose down
 # Après chaque modif du schema.prisma
 npx prisma migrate dev --name nom_de_la_migration
 
+# Seed
+npx prisma db seed
+
 # Voir ta DB visuellement
 npx prisma studio
 
