@@ -5,6 +5,7 @@ import Link from "next/link"
 import { MapPin, Eye, Clock, Phone, MessageCircle, Heart, ChevronLeft, Shield } from "lucide-react"
 import { getAnnonceById, incrementerVues } from "@/lib/annonces"
 import type { Metadata } from "next"
+import { ImageSlider } from "@/components/annonces/ImagesSlider"
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
@@ -67,7 +68,6 @@ export default async function AnnonceDetailPage({ params }: Props) {
         Retour
       </Link>
 
-      {/* ── Image(s) ── */}
       <div className="rounded-2xl overflow-hidden bg-gray-100 mb-4">
         {annonce.images.length === 0 ? (
           <div className="aspect-[4/3] flex flex-col items-center justify-center text-gray-300">
@@ -76,29 +76,15 @@ export default async function AnnonceDetailPage({ params }: Props) {
           </div>
         ) : (
           <div className="space-y-1.5 p-1.5">
-            {/* Image principale */}
             <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
-              <Image
-                src={annonce.images[0].url}
-                alt={annonce.titre}
-                fill
-                className="object-cover"
-                priority
-                sizes="(max-width: 512px) 100vw, 512px"
-              />
+                <ImageSlider images={annonce.images} titre={annonce.titre} />
             </div>
             {/* Miniatures */}
             {annonce.images.length > 1 && (
               <div className="grid grid-cols-4 gap-1.5">
                 {annonce.images.slice(1, 5).map((img, i) => (
                   <div key={img.id} className="relative aspect-square rounded-lg overflow-hidden bg-gray-200">
-                    <Image
-                      src={img.url}
-                      alt={`photo ${i + 2}`}
-                      fill
-                      className="object-cover"
-                      sizes="25vw"
-                    />
+                    <ImageSlider images={annonce.images} titre={annonce.titre} />
                     {/* Overlay "+N" sur la dernière miniature si plus de 5 images */}
                     {i === 3 && annonce.images.length > 5 && (
                       <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-sm font-bold">
