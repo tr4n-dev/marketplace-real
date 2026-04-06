@@ -62,32 +62,30 @@ export function AnnonceCard({ annonce }: { annonce: AnnonceCard }) {
         )}
       </div>
 
-      {/* Contenu */}
-      <div className="p-3 flex flex-col gap-1.5 flex-1">
-        <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-turquoise transition-colors">
+      {/* Contenu — plus compact sur mobile */}
+      <div className="p-2 sm:p-3 flex flex-col gap-1 flex-1">
+        <h3 className="text-xs sm:text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-turquoise transition-colors leading-snug">
           {annonce.titre}
         </h3>
 
-        {/* Prix */}
-        <p className={`font-bold text-base ${estGratuit ? "text-turquoise" : "text-gray-900"}`}>
+        <p className={`font-bold text-sm sm:text-base ${estGratuit ? "text-turquoise" : "text-gray-900"}`}>
           {formatPrix(annonce.prix, annonce.typesPrix)}
           {annonce.typesPrix === "NEGOCIABLE" && (
-            <span className="text-xs font-normal text-gray-400 ml-1">(négociable)</span>
+            <span className="text-xs font-normal text-gray-400 ml-1 hidden sm:inline">(nég.)</span>
           )}
         </p>
 
-        {/* Localisation + vues + date */}
-        <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-50 text-xs text-gray-400">
-          <span className="flex items-center gap-1">
-            <MapPin className="w-3 h-3 text-turquoise" />
-            {annonce.localisation}
+        <div className="flex items-center justify-between mt-auto pt-1.5 border-t border-gray-50 text-[10px] sm:text-xs text-gray-400">
+          <span className="flex items-center gap-0.5">
+            <MapPin className="w-2.5 h-2.5 text-turquoise shrink-0" />
+            <span className="truncate max-w-[60px] sm:max-w-none">{annonce.localisation}</span>
           </span>
-          <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1">
-              <Eye className="w-3 h-3" />
+          <div className="flex items-center gap-1.5">
+            <span className="flex items-center gap-0.5">
+              <Eye className="w-2.5 h-2.5" />
               {annonce.vues}
             </span>
-            <span>{formatDateRelative(annonce.createdAt)}</span>
+            <span className="hidden sm:inline">{formatDateRelative(annonce.createdAt)}</span>
           </div>
         </div>
       </div>
