@@ -5,6 +5,89 @@
 import { prisma } from "./prisma"
 import type { Prisma } from "@prisma/client"
 
+
+// Type pour les filtres — correspond exactement aux search params de l'URL
+export type FiltresAnnonces = {
+  recherche?: string
+  categorie?: string
+  ville?: string
+  prixMin?: number
+  prixMax?: number
+  typePrix?: string
+  page?: number
+}
+
+const PAR_PAGE = 20
+
+
+export async function getAnnonces(filtres: FiltresAnnonces = {}) {
+  const { recherche, categorie, ville, prixMin, prixMax, typePrix, page = 1 } = filtres
+
+  // On construit le "where" dynamiquement selon les filtres actifs
+  // Prisma ignore les champs "undefined" automatiquement
+  const where: Prisma.AnnonceWhereInput = {
+    statut: "ACTIVE",
+
+    // Recherche textuelle sur titre ET description
+    // "contains" = LIKE '%...%' en SQL
+    // "mode: insensitive" = insensible à la casse
+    ...(recherche && {
+      OR: [
+        { titre: { contains: recherche, mode: "insensitive" } },
+        { description: { contains: recherche, mode: "insensitive" } },
+      ],
+    }),
+
+    // Filtre par slug de catégorie
+    ...(categorie && {
+      categorie: { slug: categorie },
+    }),
+
+    // Filtre par ville
+    ...(ville && {
+      localisation: { contains: ville, mode: "insensitive" },
+    }),
+    
+
+    // Filtre par fourchette de prix
+    ...(prixMin !== undefined || prixMax !== undefined ? {
+      prix: {
+        ...(prixMin !== undefined && { gte: prixMin }), // gte = >=
+        ...(prixMax !== undefined && { lte: prixMax }), // lte = <=
+      },
+    } : {}),
+
+    // Filtre par type de prix (FIXE, NEGOCIABLE, GRATUIT, ECHANGE)
+    ...(typePrix && {
+      typesPrix: typePrix as "FIXE" | "NEGOCIABLE" | "GRATUIT" | "ECHANGE",
+    }),
+  }
+
+  // On lance les deux requêtes en parallèle :
+  // 1. Les annonces de la page courante
+  // 2. Le nombre total (pour la pagination)
+  const [annonces, total] = await Promise.all([
+    prisma.annonce.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * PAR_PAGE,  // OFFSET en SQL
+      take: PAR_PAGE,                // LIMIT en SQL
+      include: {
+        images: { where: { ordre: 0 }, take: 1 },
+        categorie: true,
+        user: { select: { name: true, image: true } },
+      },
+    }),
+    prisma.annonce.count({ where }),
+  ])
+
+  return {
+    annonces,
+    total,
+    pages: Math.ceil(total / PAR_PAGE),
+    page,
+  }
+}
 // ─────────────────────────────────────────────
 // TYPES EXPORTÉS
 // ─────────────────────────────────────────────
