@@ -3,9 +3,12 @@
 import Link from "next/link"
 import { useState } from "react"
 import { Search, Menu, X, Plus, MapPin } from "lucide-react"
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 
 export function Navbar() {
-  const [menuOuvert, setMenuOuvert] = useState(false)
+  const [menuOuvert, setMenuOuvert] = useState(false);
+  const { data: session, status } = useSession();
 
   return (
     <header className="bg-white border-b-2 border-primary sticky top-0 z-50 shadow-sm">
@@ -54,20 +57,49 @@ export function Navbar() {
 
         {/* Actions droite */}
         <div className="ml-auto flex items-center gap-3">
-          <Link
-            href="/annonces/creer"
-            className="hidden md:flex items-center gap-2 btn-primary text-sm"
-          >
-            <Plus className="w-4 h-4" />
-            Déposer une annonce
-          </Link>
 
-          <Link
-            href="/auth/connexion"
-            className="text-sm text-gray-600 hover:text-turquoise font-medium transition-colors"
-          >
-            Se connecter
-          </Link>
+          {status === "loading" ? (
+            // Skeleton pendant le chargement
+            <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+
+          ) : session ? (
+            // Utilisateur connecté
+            <>
+              <Link
+                href="/annonces/creer"
+                className="hidden md:flex items-center gap-2 btn-primary text-sm"
+              >
+                <Plus className="w-4 h-4" />
+                Déposer une annonce
+              </Link>
+              <div className="flex items-center gap-2">
+                {session.user.image ? (
+                  <Image
+                    src={session.user.image}
+                    alt={session.user.name ?? ""}
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                ) : (<div className="w-8 h-8 rounded-full bg-turquoise flex items-center justify-center text-white text-sm font-bold">
+                  {session.user.name?.[0]?.toUpperCase()}
+                </div>
+                )}
+                <button
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  Déconnexion
+                </button>
+              </div>
+            </>
+
+          ) : (
+            // Non connecté
+            <Link href="/auth/connexion" className="text-sm text-gray-600 hover:text-turquoise font-medium transition-colors">
+              Se connecter
+            </Link>
+          )}
 
           <button
             className="md:hidden p-1"
