@@ -125,7 +125,7 @@ export default async function AnnoncesPage({ searchParams }: Props) {
               {/* Grille — 2 colonnes sur mobile (360px+), 3 sur md */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
                 {annonces.map((annonce) => (
-                  <AnnonceCard key={annonce.id} annonce={annonce} />
+                  <AnnonceCard key={annonce.id} annonce={annonce as any} />
                 ))}
               </div>
 

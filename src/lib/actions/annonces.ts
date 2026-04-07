@@ -7,6 +7,8 @@
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { schemaAnnonce } from "@/lib/validations"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../auth"
 
 // Type retourné par la Server Action
 // On retourne soit une erreur, soit on redirige
@@ -20,6 +22,13 @@ export async function creerAnnonce(
   formData: FormData
 ): Promise<EtatAction> {
 
+  // 0. Vérifier la session
+  const session = await getServerSession(authOptions)
+ 
+  if (!session?.user?.id) {
+    return { erreurGlobale: "Vous devez être connecté pour publier une annonce" }
+  }
+
   // 1. Extraire les données du FormData
   const rawData = {
     titre: formData.get("titre") as string,
@@ -28,9 +37,7 @@ export async function creerAnnonce(
     typesPrix: formData.get("typesPrix") as string,
     localisation: formData.get("localisation") as string,
     codePostal: formData.get("codePostal") as string || undefined,
-    categorieId: formData.get("categorieId") as string,
-    sousCategorieId: formData.get("sousCategorieId") as string || undefined,
-    // Les images sont sérialisées en JSON dans un champ caché
+    categorieId: formData.get("categorieId") as string,    // Les images sont sérialisées en JSON dans un champ caché
     images: JSON.parse(formData.get("images") as string || "[]"),
   }
 
@@ -46,17 +53,7 @@ export async function creerAnnonce(
 
   const data = validation.data
 
-  // 3. Récupérer l'utilisateur connecté
-  // Pour l'instant on utilise le user de test — on branchera la session à l'étape auth
-  const user = await prisma.user.findFirst({
-    where: { email: "test@test.com" },
-  })
-
-  if (!user) {
-    return { erreurGlobale: "Vous devez être connecté pour publier une annonce" }
-  }
-
-  // 4. Créer l'annonce avec ses images en une seule transaction Prisma
+  // 3. Créer l'annonce avec ses images en une seule transaction Prisma
   // "create" avec "images: { createMany }" fait tout en une seule requête SQL
   try {
     const annonce = await prisma.annonce.create({
@@ -68,7 +65,7 @@ export async function creerAnnonce(
         localisation: data.localisation || "",
         codePostal: data.codePostal,
         categorieId: data.categorieId,
-        userId: user.id,
+        userId: session.user.id,
         // createMany insère toutes les images en une seule requête
         images: {
           createMany: {

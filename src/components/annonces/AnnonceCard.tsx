@@ -26,7 +26,7 @@ function formatDateRelative(date: Date): string {
 
 export function AnnonceCard({ annonce }: { annonce: AnnonceCard }) {
   const imagePrincipale = annonce.images[0]
-  const estGratuit = annonce.typesPrix === "GRATUIT"
+  const isFree = annonce.typesPrix === "GRATUIT"
 
   return (
     <Link
@@ -55,7 +55,7 @@ export function AnnonceCard({ annonce }: { annonce: AnnonceCard }) {
         </span>
 
         {/* Badge gratuit */}
-        {estGratuit && (
+        {isFree && (
           <span className="absolute top-2 right-2 bg-turquoise text-white text-xs font-bold px-2 py-1 rounded-full">
             Maimbo
           </span>
@@ -68,7 +68,7 @@ export function AnnonceCard({ annonce }: { annonce: AnnonceCard }) {
           {annonce.titre}
         </h3>
 
-        <p className={`font-bold text-sm sm:text-base ${estGratuit ? "text-turquoise" : "text-gray-900"}`}>
+        <p className={`font-bold text-sm sm:text-base ${isFree ? "text-turquoise" : "text-gray-900"}`}>
           {formatPrix(annonce.prix, annonce.typesPrix)}
           {annonce.typesPrix === "NEGOCIABLE" && (
             <span className="text-xs font-normal text-gray-400 ml-1 hidden sm:inline">(nég.)</span>

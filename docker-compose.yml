@@ -1,11 +1,11 @@
 services:
   postgres:
     image: postgres:16
-    container_name: test-leboncoin
+    container_name: mada-marketplace
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: leboncoin
+      POSTGRES_DB: mada-marketplace
     ports:
       - "5432:5432"
     volumes:

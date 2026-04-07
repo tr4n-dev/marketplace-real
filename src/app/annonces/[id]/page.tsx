@@ -151,9 +151,9 @@ export default async function AnnonceDetailPage({ params }: Props) {
               {annonce.user.name?.[0]?.toUpperCase() ?? "?"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-gray-900 text-sm">
+              <Link href={`/profile/${annonce.user.id}`} className="font-semibold text-gray-900 text-sm">
                 {annonce.user.name ?? "Vendeur"}
-              </p>
+              </Link>
               <p className="text-xs text-gray-400">
                 Membre depuis {formatDate(annonce.user.createdAt)}
               </p>

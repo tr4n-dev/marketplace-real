@@ -73,13 +73,15 @@ export function Navbar() {
               </Link>
               <div className="flex items-center gap-2">
                 {session.user.image ? (
-                  <Image
-                    src={session.user.image}
-                    alt={session.user.name ?? ""}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
+                   <Link href={`/profile/${session.user.id}`} className="text-sm text-gray-600 hover:text-turquoise font-medium transition-colors">
+                     <Image
+                       src={session.user.image}
+                       alt={session.user.name ?? ""}
+                       width={32}
+                       height={32}
+                       className="rounded-full"
+                     />
+                   </Link>
                 ) : (<div className="w-8 h-8 rounded-full bg-turquoise flex items-center justify-center text-white text-sm font-bold">
                   {session.user.name?.[0]?.toUpperCase()}
                 </div>
