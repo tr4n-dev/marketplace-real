@@ -19,16 +19,17 @@ generator client {
 // Chaque ligne = une colonne dans la table PostgreSQL
 model User {
   id            String    @id @default(cuid())  // ID unique auto-généré (ex: "clx123abc")
-  name          String?                          // "?" = optionnel (peut être NULL en DB)
+  fullname      String?                          // "?" = optionnel (peut être NULL en DB)
   email         String?   @unique               // Email unique → pas deux comptes avec le même
   emailVerified DateTime?                        // Date de vérification email (géré par NextAuth)
+  phone         String?                          // Numéro de téléphone
   image         String?                          // URL de la photo de profil
   password      String?                          // Mot de passe hashé (null si login Facebook)
   city          String?
   region        String?
-  phone         String?                          // Numéro de téléphone
   createdAt     DateTime  @default(now())        // Date de création automatique
   updatedAt     DateTime  @updatedAt             // Mis à jour automatiquement par Prisma
+  points        Int       @default(0)
 
   // Relations → un User peut avoir plusieurs de ces éléments
   accounts      Account[]    // Comptes OAuth (Facebook, Google…)
@@ -92,22 +93,7 @@ model Categorie {
   icone       String?             // Nom de l'icône lucide-react
   couleur     String?             // Couleur hex pour l'affichage
   createdAt   DateTime  @default(now())
-
   annonces    Annonce[]           // Une catégorie contient plusieurs annonces
-  sousCategories SousCategorie[]  // Une catégorie a des sous-catégories
-}
-
-// ─────────────────────────────────────────────
-// MODÈLE : SousCategorie
-// ─────────────────────────────────────────────
-model SousCategorie {
-  id          String    @id @default(cuid())
-  nom         String                          // ex: "Appartements", "Maisons"
-  slug        String                          // ex: "appartements"
-  categorieId String                          // Clé étrangère vers Categorie
-
-  categorie   Categorie @relation(fields: [categorieId], references: [id], onDelete: Cascade)
-  annonces    Annonce[]
 }
 
 // ─────────────────────────────────────────────
@@ -138,7 +124,6 @@ model Annonce {
   // Relations
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   categorie       Categorie     @relation(fields: [categorieId], references: [id])
-  sousCategorie   SousCategorie? @relation(fields: [sousCategorieId], references: [id])
   images          Image[]                             // Une annonce a plusieurs images
   messages        Message[]                           // Messages liés à cette annonce
   favorites       Favorite[]                          // Mis en favoris par des users
@@ -159,7 +144,6 @@ model Image {
   publicId   String                         // ID Cloudinary (pour pouvoir supprimer l'image)
   ordre      Int      @default(0)           // Ordre d'affichage (0 = image principale)
   annonceId  String
-
   annonce    Annonce  @relation(fields: [annonceId], references: [id], onDelete: Cascade)
 }
 

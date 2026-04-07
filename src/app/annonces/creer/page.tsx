@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function CreerAnnoncePage() {
-  // On récupère les catégories avec leurs sous-catégories pour le formulaire
+  // On récupère les catégories avec pour le formulaire
   const categories = await prisma.categorie.findMany({
     orderBy: { nom: "asc" }
   })

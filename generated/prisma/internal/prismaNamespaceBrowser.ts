@@ -56,7 +56,6 @@ export const ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Categorie: 'Categorie',
-  SousCategorie: 'SousCategorie',
   Annonce: 'Annonce',
   Image: 'Image',
   Message: 'Message',
@@ -81,16 +80,17 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  fullname: 'fullname',
   email: 'email',
   emailVerified: 'emailVerified',
+  phone: 'phone',
   image: 'image',
   password: 'password',
   city: 'city',
   region: 'region',
-  phone: 'phone',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  points: 'points'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -143,16 +143,6 @@ export const CategorieScalarFieldEnum = {
 } as const
 
 export type CategorieScalarFieldEnum = (typeof CategorieScalarFieldEnum)[keyof typeof CategorieScalarFieldEnum]
-
-
-export const SousCategorieScalarFieldEnum = {
-  id: 'id',
-  nom: 'nom',
-  slug: 'slug',
-  categorieId: 'categorieId'
-} as const
-
-export type SousCategorieScalarFieldEnum = (typeof SousCategorieScalarFieldEnum)[keyof typeof SousCategorieScalarFieldEnum]
 
 
 export const AnnonceScalarFieldEnum = {

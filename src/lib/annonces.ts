@@ -75,7 +75,7 @@ export async function getAnnonces(filtres: FiltresAnnonces = {}) {
       include: {
         images: { where: { ordre: 0 }, take: 1 },
         categorie: true,
-        user: { select: { name: true, image: true } },
+        user: { select: { fullname: true, image: true } },
       },
     }),
     prisma.annonce.count({ where }),
@@ -108,7 +108,6 @@ export type AnnonceDetail = Prisma.AnnonceGetPayload<{
   include: {
     images: true           // Toutes les images
     categorie: true
-    sousCategorie: true
     user: {
       select: {
         id: true
@@ -127,7 +126,7 @@ export type AnnonceDetail = Prisma.AnnonceGetPayload<{
 
 // Récupère les annonces récentes pour la page d'accueil
 // "take: 8" = LIMIT 8 en SQL
-export async function getAnnoncesRecentes(take = 8): Promise<AnnonceCard[]> {
+export async function getAnnoncesRecentes(take = 20): Promise<AnnonceCard[]> {
   return prisma.annonce.findMany({
     where: {
       statut: "ACTIVE", // Seulement les annonces actives
@@ -144,12 +143,12 @@ export async function getAnnoncesRecentes(take = 8): Promise<AnnonceCard[]> {
       categorie: true,
       user: {
         select: {          // "select" = on choisit exactement les champs retournés
-          name: true,      // On ne retourne JAMAIS le mot de passe, même hashé
+          fullname: true,      // On ne retourne JAMAIS le mot de passe, même hashé
           image: true,
         },
       },
     },
-  })
+  }) as any;
 }
 
 // Récupère toutes les catégories avec le nombre d'annonces actives
@@ -177,18 +176,17 @@ export async function getAnnonceById(id: string): Promise<AnnonceDetail | null> 
     include: {
       images: true,
       categorie: true,
-      sousCategorie: true,
       user: {
         select: {
           id: true,
-          name: true,
+          fullname: true,
           image: true,
           createdAt: true,
           phone: true,
         },
       },
     },
-  })
+  }) as any;
 }
 
 // Incrémente le compteur de vues d'une annonce

@@ -389,7 +389,6 @@ export const ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Categorie: 'Categorie',
-  SousCategorie: 'SousCategorie',
   Annonce: 'Annonce',
   Image: 'Image',
   Message: 'Message',
@@ -409,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "categorie" | "sousCategorie" | "annonce" | "image" | "message" | "favorite"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "categorie" | "annonce" | "image" | "message" | "favorite"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -783,80 +782,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    SousCategorie: {
-      payload: Prisma.$SousCategoriePayload<ExtArgs>
-      fields: Prisma.SousCategorieFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.SousCategorieFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.SousCategorieFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload>
-        }
-        findFirst: {
-          args: Prisma.SousCategorieFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.SousCategorieFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload>
-        }
-        findMany: {
-          args: Prisma.SousCategorieFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload>[]
-        }
-        create: {
-          args: Prisma.SousCategorieCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload>
-        }
-        createMany: {
-          args: Prisma.SousCategorieCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.SousCategorieCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload>[]
-        }
-        delete: {
-          args: Prisma.SousCategorieDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload>
-        }
-        update: {
-          args: Prisma.SousCategorieUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload>
-        }
-        deleteMany: {
-          args: Prisma.SousCategorieDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.SousCategorieUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.SousCategorieUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload>[]
-        }
-        upsert: {
-          args: Prisma.SousCategorieUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SousCategoriePayload>
-        }
-        aggregate: {
-          args: Prisma.SousCategorieAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateSousCategorie>
-        }
-        groupBy: {
-          args: Prisma.SousCategorieGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SousCategorieGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.SousCategorieCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SousCategorieCountAggregateOutputType> | number
-        }
-      }
-    }
     Annonce: {
       payload: Prisma.$AnnoncePayload<ExtArgs>
       fields: Prisma.AnnonceFieldRefs
@@ -1194,16 +1119,17 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  fullname: 'fullname',
   email: 'email',
   emailVerified: 'emailVerified',
+  phone: 'phone',
   image: 'image',
   password: 'password',
   city: 'city',
   region: 'region',
-  phone: 'phone',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  points: 'points'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1256,16 +1182,6 @@ export const CategorieScalarFieldEnum = {
 } as const
 
 export type CategorieScalarFieldEnum = (typeof CategorieScalarFieldEnum)[keyof typeof CategorieScalarFieldEnum]
-
-
-export const SousCategorieScalarFieldEnum = {
-  id: 'id',
-  nom: 'nom',
-  slug: 'slug',
-  categorieId: 'categorieId'
-} as const
-
-export type SousCategorieScalarFieldEnum = (typeof SousCategorieScalarFieldEnum)[keyof typeof SousCategorieScalarFieldEnum]
 
 
 export const AnnonceScalarFieldEnum = {
@@ -1545,7 +1461,6 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   verificationToken?: Prisma.VerificationTokenOmit
   categorie?: Prisma.CategorieOmit
-  sousCategorie?: Prisma.SousCategorieOmit
   annonce?: Prisma.AnnonceOmit
   image?: Prisma.ImageOmit
   message?: Prisma.MessageOmit

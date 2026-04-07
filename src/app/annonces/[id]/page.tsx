@@ -108,11 +108,6 @@ export default async function AnnonceDetailPage({ params }: Props) {
             <span className="bg-turquoise/10 text-turquoise text-xs font-semibold px-3 py-1 rounded-full">
               {annonce.categorie.nom}
             </span>
-            {annonce.sousCategorie && (
-              <span className="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-full">
-                {annonce.sousCategorie.nom}
-              </span>
-            )}
             {annonce.typesPrix === "NEGOCIABLE" && (
               <span className="bg-primary/20 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full">
                 Négociable

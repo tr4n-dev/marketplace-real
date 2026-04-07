@@ -43,11 +43,6 @@ export type VerificationToken = Prisma.VerificationTokenModel
  */
 export type Categorie = Prisma.CategorieModel
 /**
- * Model SousCategorie
- * 
- */
-export type SousCategorie = Prisma.SousCategorieModel
-/**
  * Model Annonce
  * 
  */

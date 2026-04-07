@@ -326,7 +326,6 @@ export type AnnonceWhereInput = {
   sousCategorieId?: Prisma.StringNullableFilter<"Annonce"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   categorie?: Prisma.XOR<Prisma.CategorieScalarRelationFilter, Prisma.CategorieWhereInput>
-  sousCategorie?: Prisma.XOR<Prisma.SousCategorieNullableScalarRelationFilter, Prisma.SousCategorieWhereInput> | null
   images?: Prisma.ImageListRelationFilter
   messages?: Prisma.MessageListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
@@ -352,7 +351,6 @@ export type AnnonceOrderByWithRelationInput = {
   sousCategorieId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   categorie?: Prisma.CategorieOrderByWithRelationInput
-  sousCategorie?: Prisma.SousCategorieOrderByWithRelationInput
   images?: Prisma.ImageOrderByRelationAggregateInput
   messages?: Prisma.MessageOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
@@ -381,7 +379,6 @@ export type AnnonceWhereUniqueInput = Prisma.AtLeast<{
   sousCategorieId?: Prisma.StringNullableFilter<"Annonce"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   categorie?: Prisma.XOR<Prisma.CategorieScalarRelationFilter, Prisma.CategorieWhereInput>
-  sousCategorie?: Prisma.XOR<Prisma.SousCategorieNullableScalarRelationFilter, Prisma.SousCategorieWhereInput> | null
   images?: Prisma.ImageListRelationFilter
   messages?: Prisma.MessageListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
@@ -450,9 +447,9 @@ export type AnnonceCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   expiresAt?: Date | string | null
+  sousCategorieId?: string | null
   user: Prisma.UserCreateNestedOneWithoutAnnoncesInput
   categorie: Prisma.CategorieCreateNestedOneWithoutAnnoncesInput
-  sousCategorie?: Prisma.SousCategorieCreateNestedOneWithoutAnnoncesInput
   images?: Prisma.ImageCreateNestedManyWithoutAnnonceInput
   messages?: Prisma.MessageCreateNestedManyWithoutAnnonceInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutAnnonceInput
@@ -496,9 +493,9 @@ export type AnnonceUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sousCategorieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAnnoncesNestedInput
   categorie?: Prisma.CategorieUpdateOneRequiredWithoutAnnoncesNestedInput
-  sousCategorie?: Prisma.SousCategorieUpdateOneWithoutAnnoncesNestedInput
   images?: Prisma.ImageUpdateManyWithoutAnnonceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutAnnonceNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutAnnonceNestedInput
@@ -562,6 +559,7 @@ export type AnnonceUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sousCategorieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AnnonceUncheckedUpdateManyInput = {
@@ -757,48 +755,6 @@ export type AnnonceUncheckedUpdateManyWithoutCategorieNestedInput = {
   deleteMany?: Prisma.AnnonceScalarWhereInput | Prisma.AnnonceScalarWhereInput[]
 }
 
-export type AnnonceCreateNestedManyWithoutSousCategorieInput = {
-  create?: Prisma.XOR<Prisma.AnnonceCreateWithoutSousCategorieInput, Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput> | Prisma.AnnonceCreateWithoutSousCategorieInput[] | Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput[]
-  connectOrCreate?: Prisma.AnnonceCreateOrConnectWithoutSousCategorieInput | Prisma.AnnonceCreateOrConnectWithoutSousCategorieInput[]
-  createMany?: Prisma.AnnonceCreateManySousCategorieInputEnvelope
-  connect?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-}
-
-export type AnnonceUncheckedCreateNestedManyWithoutSousCategorieInput = {
-  create?: Prisma.XOR<Prisma.AnnonceCreateWithoutSousCategorieInput, Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput> | Prisma.AnnonceCreateWithoutSousCategorieInput[] | Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput[]
-  connectOrCreate?: Prisma.AnnonceCreateOrConnectWithoutSousCategorieInput | Prisma.AnnonceCreateOrConnectWithoutSousCategorieInput[]
-  createMany?: Prisma.AnnonceCreateManySousCategorieInputEnvelope
-  connect?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-}
-
-export type AnnonceUpdateManyWithoutSousCategorieNestedInput = {
-  create?: Prisma.XOR<Prisma.AnnonceCreateWithoutSousCategorieInput, Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput> | Prisma.AnnonceCreateWithoutSousCategorieInput[] | Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput[]
-  connectOrCreate?: Prisma.AnnonceCreateOrConnectWithoutSousCategorieInput | Prisma.AnnonceCreateOrConnectWithoutSousCategorieInput[]
-  upsert?: Prisma.AnnonceUpsertWithWhereUniqueWithoutSousCategorieInput | Prisma.AnnonceUpsertWithWhereUniqueWithoutSousCategorieInput[]
-  createMany?: Prisma.AnnonceCreateManySousCategorieInputEnvelope
-  set?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-  disconnect?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-  delete?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-  connect?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-  update?: Prisma.AnnonceUpdateWithWhereUniqueWithoutSousCategorieInput | Prisma.AnnonceUpdateWithWhereUniqueWithoutSousCategorieInput[]
-  updateMany?: Prisma.AnnonceUpdateManyWithWhereWithoutSousCategorieInput | Prisma.AnnonceUpdateManyWithWhereWithoutSousCategorieInput[]
-  deleteMany?: Prisma.AnnonceScalarWhereInput | Prisma.AnnonceScalarWhereInput[]
-}
-
-export type AnnonceUncheckedUpdateManyWithoutSousCategorieNestedInput = {
-  create?: Prisma.XOR<Prisma.AnnonceCreateWithoutSousCategorieInput, Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput> | Prisma.AnnonceCreateWithoutSousCategorieInput[] | Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput[]
-  connectOrCreate?: Prisma.AnnonceCreateOrConnectWithoutSousCategorieInput | Prisma.AnnonceCreateOrConnectWithoutSousCategorieInput[]
-  upsert?: Prisma.AnnonceUpsertWithWhereUniqueWithoutSousCategorieInput | Prisma.AnnonceUpsertWithWhereUniqueWithoutSousCategorieInput[]
-  createMany?: Prisma.AnnonceCreateManySousCategorieInputEnvelope
-  set?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-  disconnect?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-  delete?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-  connect?: Prisma.AnnonceWhereUniqueInput | Prisma.AnnonceWhereUniqueInput[]
-  update?: Prisma.AnnonceUpdateWithWhereUniqueWithoutSousCategorieInput | Prisma.AnnonceUpdateWithWhereUniqueWithoutSousCategorieInput[]
-  updateMany?: Prisma.AnnonceUpdateManyWithWhereWithoutSousCategorieInput | Prisma.AnnonceUpdateManyWithWhereWithoutSousCategorieInput[]
-  deleteMany?: Prisma.AnnonceScalarWhereInput | Prisma.AnnonceScalarWhereInput[]
-}
-
 export type NullableFloatFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
@@ -813,14 +769,6 @@ export type EnumTypePrixFieldUpdateOperationsInput = {
 
 export type EnumStatutAnnonceFieldUpdateOperationsInput = {
   set?: $Enums.StatutAnnonce
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type AnnonceCreateNestedOneWithoutImagesInput = {
@@ -880,8 +828,8 @@ export type AnnonceCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   expiresAt?: Date | string | null
+  sousCategorieId?: string | null
   categorie: Prisma.CategorieCreateNestedOneWithoutAnnoncesInput
-  sousCategorie?: Prisma.SousCategorieCreateNestedOneWithoutAnnoncesInput
   images?: Prisma.ImageCreateNestedManyWithoutAnnonceInput
   messages?: Prisma.MessageCreateNestedManyWithoutAnnonceInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutAnnonceInput
@@ -973,8 +921,8 @@ export type AnnonceCreateWithoutCategorieInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   expiresAt?: Date | string | null
+  sousCategorieId?: string | null
   user: Prisma.UserCreateNestedOneWithoutAnnoncesInput
-  sousCategorie?: Prisma.SousCategorieCreateNestedOneWithoutAnnoncesInput
   images?: Prisma.ImageCreateNestedManyWithoutAnnonceInput
   messages?: Prisma.MessageCreateNestedManyWithoutAnnonceInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutAnnonceInput
@@ -1028,76 +976,6 @@ export type AnnonceUpdateManyWithWhereWithoutCategorieInput = {
   data: Prisma.XOR<Prisma.AnnonceUpdateManyMutationInput, Prisma.AnnonceUncheckedUpdateManyWithoutCategorieInput>
 }
 
-export type AnnonceCreateWithoutSousCategorieInput = {
-  id?: string
-  titre: string
-  description: string
-  prix?: number | null
-  typesPrix?: $Enums.TypePrix
-  localisation: string
-  codePostal?: string | null
-  latitude?: number | null
-  longitude?: number | null
-  statut?: $Enums.StatutAnnonce
-  vues?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  expiresAt?: Date | string | null
-  user: Prisma.UserCreateNestedOneWithoutAnnoncesInput
-  categorie: Prisma.CategorieCreateNestedOneWithoutAnnoncesInput
-  images?: Prisma.ImageCreateNestedManyWithoutAnnonceInput
-  messages?: Prisma.MessageCreateNestedManyWithoutAnnonceInput
-  favorites?: Prisma.FavoriteCreateNestedManyWithoutAnnonceInput
-}
-
-export type AnnonceUncheckedCreateWithoutSousCategorieInput = {
-  id?: string
-  titre: string
-  description: string
-  prix?: number | null
-  typesPrix?: $Enums.TypePrix
-  localisation: string
-  codePostal?: string | null
-  latitude?: number | null
-  longitude?: number | null
-  statut?: $Enums.StatutAnnonce
-  vues?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  expiresAt?: Date | string | null
-  userId: string
-  categorieId: string
-  images?: Prisma.ImageUncheckedCreateNestedManyWithoutAnnonceInput
-  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutAnnonceInput
-  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutAnnonceInput
-}
-
-export type AnnonceCreateOrConnectWithoutSousCategorieInput = {
-  where: Prisma.AnnonceWhereUniqueInput
-  create: Prisma.XOR<Prisma.AnnonceCreateWithoutSousCategorieInput, Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput>
-}
-
-export type AnnonceCreateManySousCategorieInputEnvelope = {
-  data: Prisma.AnnonceCreateManySousCategorieInput | Prisma.AnnonceCreateManySousCategorieInput[]
-  skipDuplicates?: boolean
-}
-
-export type AnnonceUpsertWithWhereUniqueWithoutSousCategorieInput = {
-  where: Prisma.AnnonceWhereUniqueInput
-  update: Prisma.XOR<Prisma.AnnonceUpdateWithoutSousCategorieInput, Prisma.AnnonceUncheckedUpdateWithoutSousCategorieInput>
-  create: Prisma.XOR<Prisma.AnnonceCreateWithoutSousCategorieInput, Prisma.AnnonceUncheckedCreateWithoutSousCategorieInput>
-}
-
-export type AnnonceUpdateWithWhereUniqueWithoutSousCategorieInput = {
-  where: Prisma.AnnonceWhereUniqueInput
-  data: Prisma.XOR<Prisma.AnnonceUpdateWithoutSousCategorieInput, Prisma.AnnonceUncheckedUpdateWithoutSousCategorieInput>
-}
-
-export type AnnonceUpdateManyWithWhereWithoutSousCategorieInput = {
-  where: Prisma.AnnonceScalarWhereInput
-  data: Prisma.XOR<Prisma.AnnonceUpdateManyMutationInput, Prisma.AnnonceUncheckedUpdateManyWithoutSousCategorieInput>
-}
-
 export type AnnonceCreateWithoutImagesInput = {
   id?: string
   titre: string
@@ -1113,9 +991,9 @@ export type AnnonceCreateWithoutImagesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   expiresAt?: Date | string | null
+  sousCategorieId?: string | null
   user: Prisma.UserCreateNestedOneWithoutAnnoncesInput
   categorie: Prisma.CategorieCreateNestedOneWithoutAnnoncesInput
-  sousCategorie?: Prisma.SousCategorieCreateNestedOneWithoutAnnoncesInput
   messages?: Prisma.MessageCreateNestedManyWithoutAnnonceInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutAnnonceInput
 }
@@ -1173,9 +1051,9 @@ export type AnnonceUpdateWithoutImagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sousCategorieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAnnoncesNestedInput
   categorie?: Prisma.CategorieUpdateOneRequiredWithoutAnnoncesNestedInput
-  sousCategorie?: Prisma.SousCategorieUpdateOneWithoutAnnoncesNestedInput
   messages?: Prisma.MessageUpdateManyWithoutAnnonceNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutAnnonceNestedInput
 }
@@ -1217,9 +1095,9 @@ export type AnnonceCreateWithoutMessagesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   expiresAt?: Date | string | null
+  sousCategorieId?: string | null
   user: Prisma.UserCreateNestedOneWithoutAnnoncesInput
   categorie: Prisma.CategorieCreateNestedOneWithoutAnnoncesInput
-  sousCategorie?: Prisma.SousCategorieCreateNestedOneWithoutAnnoncesInput
   images?: Prisma.ImageCreateNestedManyWithoutAnnonceInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutAnnonceInput
 }
@@ -1277,9 +1155,9 @@ export type AnnonceUpdateWithoutMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sousCategorieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAnnoncesNestedInput
   categorie?: Prisma.CategorieUpdateOneRequiredWithoutAnnoncesNestedInput
-  sousCategorie?: Prisma.SousCategorieUpdateOneWithoutAnnoncesNestedInput
   images?: Prisma.ImageUpdateManyWithoutAnnonceNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutAnnonceNestedInput
 }
@@ -1321,9 +1199,9 @@ export type AnnonceCreateWithoutFavoritesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   expiresAt?: Date | string | null
+  sousCategorieId?: string | null
   user: Prisma.UserCreateNestedOneWithoutAnnoncesInput
   categorie: Prisma.CategorieCreateNestedOneWithoutAnnoncesInput
-  sousCategorie?: Prisma.SousCategorieCreateNestedOneWithoutAnnoncesInput
   images?: Prisma.ImageCreateNestedManyWithoutAnnonceInput
   messages?: Prisma.MessageCreateNestedManyWithoutAnnonceInput
 }
@@ -1381,9 +1259,9 @@ export type AnnonceUpdateWithoutFavoritesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sousCategorieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAnnoncesNestedInput
   categorie?: Prisma.CategorieUpdateOneRequiredWithoutAnnoncesNestedInput
-  sousCategorie?: Prisma.SousCategorieUpdateOneWithoutAnnoncesNestedInput
   images?: Prisma.ImageUpdateManyWithoutAnnonceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutAnnonceNestedInput
 }
@@ -1444,8 +1322,8 @@ export type AnnonceUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sousCategorieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categorie?: Prisma.CategorieUpdateOneRequiredWithoutAnnoncesNestedInput
-  sousCategorie?: Prisma.SousCategorieUpdateOneWithoutAnnoncesNestedInput
   images?: Prisma.ImageUpdateManyWithoutAnnonceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutAnnonceNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutAnnonceNestedInput
@@ -1526,8 +1404,8 @@ export type AnnonceUpdateWithoutCategorieInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sousCategorieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAnnoncesNestedInput
-  sousCategorie?: Prisma.SousCategorieUpdateOneWithoutAnnoncesNestedInput
   images?: Prisma.ImageUpdateManyWithoutAnnonceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutAnnonceNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutAnnonceNestedInput
@@ -1572,88 +1450,6 @@ export type AnnonceUncheckedUpdateManyWithoutCategorieInput = {
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   sousCategorieId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
-export type AnnonceCreateManySousCategorieInput = {
-  id?: string
-  titre: string
-  description: string
-  prix?: number | null
-  typesPrix?: $Enums.TypePrix
-  localisation: string
-  codePostal?: string | null
-  latitude?: number | null
-  longitude?: number | null
-  statut?: $Enums.StatutAnnonce
-  vues?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  expiresAt?: Date | string | null
-  userId: string
-  categorieId: string
-}
-
-export type AnnonceUpdateWithoutSousCategorieInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  titre?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  prix?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  typesPrix?: Prisma.EnumTypePrixFieldUpdateOperationsInput | $Enums.TypePrix
-  localisation?: Prisma.StringFieldUpdateOperationsInput | string
-  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  statut?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce
-  vues?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  user?: Prisma.UserUpdateOneRequiredWithoutAnnoncesNestedInput
-  categorie?: Prisma.CategorieUpdateOneRequiredWithoutAnnoncesNestedInput
-  images?: Prisma.ImageUpdateManyWithoutAnnonceNestedInput
-  messages?: Prisma.MessageUpdateManyWithoutAnnonceNestedInput
-  favorites?: Prisma.FavoriteUpdateManyWithoutAnnonceNestedInput
-}
-
-export type AnnonceUncheckedUpdateWithoutSousCategorieInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  titre?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  prix?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  typesPrix?: Prisma.EnumTypePrixFieldUpdateOperationsInput | $Enums.TypePrix
-  localisation?: Prisma.StringFieldUpdateOperationsInput | string
-  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  statut?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce
-  vues?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  categorieId?: Prisma.StringFieldUpdateOperationsInput | string
-  images?: Prisma.ImageUncheckedUpdateManyWithoutAnnonceNestedInput
-  messages?: Prisma.MessageUncheckedUpdateManyWithoutAnnonceNestedInput
-  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutAnnonceNestedInput
-}
-
-export type AnnonceUncheckedUpdateManyWithoutSousCategorieInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  titre?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  prix?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  typesPrix?: Prisma.EnumTypePrixFieldUpdateOperationsInput | $Enums.TypePrix
-  localisation?: Prisma.StringFieldUpdateOperationsInput | string
-  codePostal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  statut?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce
-  vues?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  categorieId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -1725,7 +1521,6 @@ export type AnnonceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   sousCategorieId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   categorie?: boolean | Prisma.CategorieDefaultArgs<ExtArgs>
-  sousCategorie?: boolean | Prisma.Annonce$sousCategorieArgs<ExtArgs>
   images?: boolean | Prisma.Annonce$imagesArgs<ExtArgs>
   messages?: boolean | Prisma.Annonce$messagesArgs<ExtArgs>
   favorites?: boolean | Prisma.Annonce$favoritesArgs<ExtArgs>
@@ -1752,7 +1547,6 @@ export type AnnonceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   sousCategorieId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   categorie?: boolean | Prisma.CategorieDefaultArgs<ExtArgs>
-  sousCategorie?: boolean | Prisma.Annonce$sousCategorieArgs<ExtArgs>
 }, ExtArgs["result"]["annonce"]>
 
 export type AnnonceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1775,7 +1569,6 @@ export type AnnonceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   sousCategorieId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   categorie?: boolean | Prisma.CategorieDefaultArgs<ExtArgs>
-  sousCategorie?: boolean | Prisma.Annonce$sousCategorieArgs<ExtArgs>
 }, ExtArgs["result"]["annonce"]>
 
 export type AnnonceSelectScalar = {
@@ -1802,7 +1595,6 @@ export type AnnonceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type AnnonceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   categorie?: boolean | Prisma.CategorieDefaultArgs<ExtArgs>
-  sousCategorie?: boolean | Prisma.Annonce$sousCategorieArgs<ExtArgs>
   images?: boolean | Prisma.Annonce$imagesArgs<ExtArgs>
   messages?: boolean | Prisma.Annonce$messagesArgs<ExtArgs>
   favorites?: boolean | Prisma.Annonce$favoritesArgs<ExtArgs>
@@ -1811,12 +1603,10 @@ export type AnnonceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type AnnonceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   categorie?: boolean | Prisma.CategorieDefaultArgs<ExtArgs>
-  sousCategorie?: boolean | Prisma.Annonce$sousCategorieArgs<ExtArgs>
 }
 export type AnnonceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   categorie?: boolean | Prisma.CategorieDefaultArgs<ExtArgs>
-  sousCategorie?: boolean | Prisma.Annonce$sousCategorieArgs<ExtArgs>
 }
 
 export type $AnnoncePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1824,7 +1614,6 @@ export type $AnnoncePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     categorie: Prisma.$CategoriePayload<ExtArgs>
-    sousCategorie: Prisma.$SousCategoriePayload<ExtArgs> | null
     images: Prisma.$ImagePayload<ExtArgs>[]
     messages: Prisma.$MessagePayload<ExtArgs>[]
     favorites: Prisma.$FavoritePayload<ExtArgs>[]
@@ -2243,7 +2032,6 @@ export interface Prisma__AnnonceClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   categorie<T extends Prisma.CategorieDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategorieDefaultArgs<ExtArgs>>): Prisma.Prisma__CategorieClient<runtime.Types.Result.GetResult<Prisma.$CategoriePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  sousCategorie<T extends Prisma.Annonce$sousCategorieArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Annonce$sousCategorieArgs<ExtArgs>>): Prisma.Prisma__SousCategorieClient<runtime.Types.Result.GetResult<Prisma.$SousCategoriePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   images<T extends Prisma.Annonce$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Annonce$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   messages<T extends Prisma.Annonce$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Annonce$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favorites<T extends Prisma.Annonce$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Annonce$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2691,25 +2479,6 @@ export type AnnonceDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Annonces to delete.
    */
   limit?: number
-}
-
-/**
- * Annonce.sousCategorie
- */
-export type Annonce$sousCategorieArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the SousCategorie
-   */
-  select?: Prisma.SousCategorieSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the SousCategorie
-   */
-  omit?: Prisma.SousCategorieOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SousCategorieInclude<ExtArgs> | null
-  where?: Prisma.SousCategorieWhereInput
 }
 
 /**

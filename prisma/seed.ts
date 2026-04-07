@@ -1,5 +1,5 @@
 // prisma/seed.ts
-// Ce script remplit la DB avec des données initiales (catégories, sous-catégories)
+// Ce script remplit la DB avec des données initiales (catégories)
 // On l'exécute une seule fois avec : npx prisma db seed
 
 import "dotenv/config"
@@ -21,57 +21,49 @@ async function main() {
       nom: "Véhicules",
       slug: "vehicules",
       icone: "Car",
-      couleur: "#3B82F6",
-      sousCategories: ["Voitures", "Motos", "Camions", "Bateaux", "Caravaning"],
+      couleur: "#3B82F6"
     },
     {
       nom: "Immobilier",
       slug: "immobilier",
       icone: "Home",
-      couleur: "#10B981",
-      sousCategories: ["Ventes maisons", "Ventes appartements", "Locations", "Colocations", "Bureaux & Commerces"],
+      couleur: "#10B981"
     },
     {
       nom: "Multimédia",
       slug: "multimedia",
       icone: "Monitor",
-      couleur: "#8B5CF6",
-      sousCategories: ["Informatique", "Téléphonie", "Image & Son", "Jeux vidéo", "Photo"],
+      couleur: "#8B5CF6"
     },
     {
       nom: "Mode",
       slug: "mode",
       icone: "Shirt",
-      couleur: "#EC4899",
-      sousCategories: ["Vêtements", "Chaussures", "Accessoires", "Montres & Bijoux"],
+      couleur: "#EC4899"
     },
     {
       nom: "Maison & Jardin",
       slug: "maison-jardin",
       icone: "Sofa",
-      couleur: "#F59E0B",
-      sousCategories: ["Meubles", "Électroménager", "Décoration", "Bricolage", "Jardinage"],
+      couleur: "#F59E0B"
     },
     {
       nom: "Loisirs",
       slug: "loisirs",
       icone: "Gamepad2",
-      couleur: "#EF4444",
-      sousCategories: ["Sport", "Vélos", "Livres", "Musique", "Collection"],
+      couleur: "#EF4444"
     },
     {
       nom: "Emploi",
       slug: "emploi",
       icone: "Briefcase",
-      couleur: "#06B6D4",
-      sousCategories: ["Offres d'emploi", "Formations professionnelles"],
+      couleur: "#06B6D4"
     },
     {
       nom: "Services",
       slug: "services",
       icone: "Wrench",
-      couleur: "#84CC16",
-      sousCategories: ["Cours particuliers", "Services à la personne", "Artisans & Travaux"],
+      couleur: "#84CC16"
     },
   ];
 
@@ -88,32 +80,6 @@ async function main() {
       },
     });
 
-    // On crée les sous-catégories liées
-    for (const scNom of cat.sousCategories) {
-      const slug = scNom
-        .toLowerCase()
-        .normalize("NFD")                        // Décompose les accents
-        .replace(/[\u0300-\u036f]/g, "")         // Supprime les accents
-        .replace(/[^a-z0-9]+/g, "-")             // Remplace les espaces/spéciaux par "-"
-        .replace(/^-+|-+$/g, "");                // Supprime les tirets en début/fin
-
-      await prisma.sousCategorie.upsert({
-        where: {
-          // Prisma ne peut faire un upsert que sur un champ @unique
-          // Comme slug seul n'est pas unique globalement, on cherche manuellement
-          id: (await prisma.sousCategorie.findFirst({
-            where: { slug, categorieId: categorie.id },
-          }))?.id ?? "inexistant",
-        },
-        update: {},
-        create: {
-          nom: scNom,
-          slug,
-          categorieId: categorie.id,
-        },
-      });
-    }
-
     console.log(`✅ Catégorie créée : ${cat.nom}`);
   }
 
@@ -122,7 +88,7 @@ async function main() {
     update: {},
     create: {
       email: "test@test.com",
-      name: "Jean Dupont",
+      fullname: "Jean Dupont",
       password: "hashed_password", // on hashe proprement à l'étape auth
     },
   })
@@ -132,10 +98,6 @@ async function main() {
   const catImmobilier = await prisma.categorie.findUnique({ where: { slug: "immobilier" } })
   const catMode = await prisma.categorie.findUnique({ where: { slug: "mode" } })
 
-  const scVoitures = await prisma.sousCategorie.findFirst({ where: { slug: "voitures" } })
-  const scInformatique = await prisma.sousCategorie.findFirst({ where: { slug: "informatique" } })
-  const scAppartements = await prisma.sousCategorie.findFirst({ where: { slug: "ventes-appartements" } })
-  const scVetements = await prisma.sousCategorie.findFirst({ where: { slug: "vetements" } })
   const annonces = [
     {
       titre: "iPhone 14 Pro 256Go - Excellent état",
@@ -145,7 +107,6 @@ async function main() {
       localisation: "Paris",
       codePostal: "75011",
       categorieId: catMultimedia!.id,
-      sousCategorieId: scInformatique!.id,
       userId: user.id,
       statut: "ACTIVE" as const,
       vues: 142,
@@ -158,7 +119,6 @@ async function main() {
       localisation: "Lyon",
       codePostal: "69003",
       categorieId: catVehicules!.id,
-      sousCategorieId: scVoitures!.id,
       userId: user.id,
       statut: "ACTIVE" as const,
       vues: 89,
@@ -171,7 +131,6 @@ async function main() {
       localisation: "Bordeaux",
       codePostal: "33000",
       categorieId: catImmobilier!.id,
-      sousCategorieId: scAppartements!.id,
       userId: user.id,
       statut: "ACTIVE" as const,
       vues: 310,
@@ -184,7 +143,6 @@ async function main() {
       localisation: "Marseille",
       codePostal: "13001",
       categorieId: catMode!.id,
-      sousCategorieId: scVetements!.id,
       userId: user.id,
       statut: "ACTIVE" as const,
       vues: 57,
@@ -197,7 +155,6 @@ async function main() {
       localisation: "Paris",
       codePostal: "75008",
       categorieId: catMultimedia!.id,
-      sousCategorieId: scInformatique!.id,
       userId: user.id,
       statut: "ACTIVE" as const,
       vues: 203,
@@ -210,7 +167,6 @@ async function main() {
       localisation: "Nantes",
       codePostal: "44000",
       categorieId: (await prisma.categorie.findUnique({ where: { slug: "maison-jardin" } }))!.id,
-      sousCategorieId: (await prisma.sousCategorie.findFirst({ where: { slug: "meubles" } }))!.id,
       userId: user.id,
       statut: "ACTIVE" as const,
       vues: 78,
