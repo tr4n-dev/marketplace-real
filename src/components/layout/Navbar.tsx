@@ -61,7 +61,6 @@ export function Navbar() {
           {status === "loading" ? (
             // Skeleton pendant le chargement
             <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
-
           ) : session ? (
             // Utilisateur connecté
             <>
@@ -127,21 +126,24 @@ export function Navbar() {
               <Search className="w-4 h-4 text-white" />
             </button>
           </div>
-          <Link
-            href="/annonces/creer"
-            className="btn-primary text-sm text-center"
-            onClick={() => setMenuOuvert(false)}
-          >
-            <Plus className="w-4 h-4 inline mr-2" />
-            Déposer une annonce
-          </Link>
-          <Link
-            href="/auth/connexion"
-            className="text-sm text-center text-gray-600"
-            onClick={() => setMenuOuvert(false)}
-          >
-            Se connecter
-          </Link>
+          {
+            session ?
+              <Link
+                href="/annonces/creer"
+                className="btn-primary text-sm text-center"
+                onClick={() => setMenuOuvert(false)}
+              >
+                <Plus className="w-4 h-4 inline mr-2" />
+                Déposer une annonce
+              </Link> :
+              <Link
+                href="/auth/connexion"
+                className="text-sm text-center text-gray-600"
+                onClick={() => setMenuOuvert(false)}
+              >
+                Se connecter
+              </Link>
+          }
         </div>
       )}
     </header>
