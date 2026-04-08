@@ -1,6 +1,6 @@
 # 
 
-# Démarrer la DB
+# Démarrer la  DB
 docker-compose up -d
 
 # Arrêter la DB

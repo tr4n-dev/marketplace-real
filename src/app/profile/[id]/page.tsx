@@ -7,7 +7,7 @@ import Image from "next/image";
 // ─── Types ───────────────────────────────────────────────
 interface UserProfile {
   id: string;
-  fullname: string | null;
+  name: string | null;
   email: string | null;
   phone: string | null;
   image: string | null;
@@ -19,7 +19,7 @@ interface UserProfile {
 }
 
 interface FormState {
-  fullname: string;
+  name: string;
   phone: string;
   city: string;
   region: string;
@@ -77,7 +77,7 @@ export default function ProfilePage() {
   const { data: session, status } = useSession();
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [form, setForm] = useState<FormState>({ fullname: "", phone: "", city: "", region: "" });
+  const [form, setForm] = useState<FormState>({ name: "", phone: "", city: "", region: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -92,7 +92,7 @@ export default function ProfilePage() {
         .then((data: UserProfile) => {
           setProfile(data);
           setForm({
-            fullname: data.fullname ?? "",
+            name: data.name ?? "",
             phone: data.phone ?? "",
             city: data.city ?? "",
             region: data.region ?? "",
@@ -138,7 +138,7 @@ export default function ProfilePage() {
   const handleCancel = () => {
     if (profile) {
       setForm({
-        fullname: profile.fullname ?? "",
+        name: profile.name ?? "",
         phone: profile.phone ?? "",
         city: profile.city ?? "",
         region: profile.region ?? "",
@@ -174,8 +174,8 @@ export default function ProfilePage() {
     );
   }
 
-  const initials = profile?.fullname
-    ? profile.fullname.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+  const initials = profile?.name
+    ? profile.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
     : profile?.email?.[0]?.toUpperCase() ?? "?";
 
   const memberSince = profile?.createdAt
@@ -202,7 +202,7 @@ export default function ProfilePage() {
                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-4 border-white shadow-md">
                   <Image
                     src={profile.image}
-                    alt={profile.fullname ?? "Avatar"}
+                    alt={profile.name ?? "Avatar"}
                     width={96}
                     height={96}
                     className="object-cover w-full h-full"
@@ -222,7 +222,7 @@ export default function ProfilePage() {
             {/* Nom + meta */}
             <div className="flex-1 min-w-0 pb-1">
               <h1 className="text-lg sm:text-xl font-bold text-stone-800 truncate">
-                {profile?.fullname ?? "Nom non renseigné"}
+                {profile?.name ?? "Nom non renseigné"}
               </h1>
               <p className="text-stone-400 text-xs truncate">{profile?.email}</p>
               {memberSince && (
@@ -302,8 +302,8 @@ export default function ProfilePage() {
                 </label>
                 <input
                   type="text"
-                  value={form.fullname}
-                  onChange={(e) => setForm({ ...form, fullname: e.target.value })}
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="Ton nom complet"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 bg-stone-50 text-stone-800 text-sm focus:outline-none focus:border-orange-400 focus:bg-white focus:ring-2 focus:ring-orange-100 transition-all placeholder:text-stone-300"
                 />
@@ -400,7 +400,7 @@ export default function ProfilePage() {
           ) : (
             /* ── MODE LECTURE ── */
             <div className="p-4 sm:p-6 space-y-0 divide-y divide-stone-50">
-              <InfoRow icon={<IconUser />} label="Nom complet" value={profile?.fullname} />
+              <InfoRow icon={<IconUser />} label="Nom complet" value={profile?.name} />
               <InfoRow icon={<IconMail />} label="Email" value={profile?.email} />
               <InfoRow
                 icon={<IconPhone />}

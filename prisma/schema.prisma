@@ -19,7 +19,7 @@ generator client {
 // Chaque ligne = une colonne dans la table PostgreSQL
 model User {
   id            String    @id @default(cuid())  // ID unique auto-généré (ex: "clx123abc")
-  fullname      String?                          // "?" = optionnel (peut être NULL en DB)
+  name          String?                          // "?" = optionnel (peut être NULL en DB)
   email         String?   @unique               // Email unique → pas deux comptes avec le même
   emailVerified DateTime?                        // Date de vérification email (géré par NextAuth)
   phone         String?                          // Numéro de téléphone

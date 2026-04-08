@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
       // On demande l'email et la photo de profil à Facebook
       authorization: {
         params: {
-          scope: "email,public_profile,user_location,user_hometown",
+          scope: "email,public_profile,user_location, user_hometown",
         },
       },
     }),

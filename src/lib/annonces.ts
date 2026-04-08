@@ -75,7 +75,7 @@ export async function getAnnonces(filtres: FiltresAnnonces = {}) {
       include: {
         images: { where: { ordre: 0 }, take: 1 },
         categorie: true,
-        user: { select: { fullname: true, image: true } },
+        user: { select: { name: true, image: true } },
       },
     }),
     prisma.annonce.count({ where }),
@@ -143,7 +143,7 @@ export async function getAnnoncesRecentes(take = 20): Promise<AnnonceCard[]> {
       categorie: true,
       user: {
         select: {          // "select" = on choisit exactement les champs retournés
-          fullname: true,      // On ne retourne JAMAIS le mot de passe, même hashé
+          name: true,      // On ne retourne JAMAIS le mot de passe, même hashé
           image: true,
         },
       },
@@ -179,7 +179,7 @@ export async function getAnnonceById(id: string): Promise<AnnonceDetail | null> 
       user: {
         select: {
           id: true,
-          fullname: true,
+          name: true,
           image: true,
           createdAt: true,
           phone: true,

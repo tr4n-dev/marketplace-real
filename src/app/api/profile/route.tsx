@@ -15,7 +15,7 @@ export async function GET() {
     where: { id: session.user.id },
     select: {
       id: true,
-      fullname: true,
+      name: true,
       email: true,
       phone: true,
       image: true,
@@ -44,7 +44,7 @@ export async function PATCH(req: NextRequest) {
   const body = await req.json();
 
   // On whiteliste les champs modifiables
-  const { fullname, phone, city, region } = body;
+  const { name, phone, city, region } = body;
 
   // Validation basique du numéro de téléphone
   if (phone && !/^[+\d\s\-().]{6,20}$/.test(phone)) {
@@ -54,14 +54,14 @@ export async function PATCH(req: NextRequest) {
   const updatedUser = await prisma.user.update({
     where: { id: session.user.id },
     data: {
-      ...(fullname !== undefined && { fullname }),
+      ...(name !== undefined && { name }),
       ...(phone !== undefined && { phone }),
       ...(city !== undefined && { city }),
       ...(region !== undefined && { region }),
     },
     select: {
       id: true,
-      fullname: true,
+      name: true,
       email: true,
       phone: true,
       image: true,
