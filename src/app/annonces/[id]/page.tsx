@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, Eye, Clock, Phone, MessageCircle, Heart, ChevronLeft, Shield } from "lucide-react"
+import { MapPin, Eye, Clock, Phone, MessageCircle, Heart, ChevronLeft, Shield, BanknoteArrowDown } from "lucide-react"
 import { getAnnonceById, incrementerVues } from "@/lib/annonces"
 import type { Metadata } from "next"
 import { ImageSlider } from "@/components/annonces/ImagesSlider"
@@ -172,7 +172,7 @@ export default async function AnnonceDetailPage({ params }: Props) {
                 className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-gray-900 font-semibold text-sm py-3 rounded-xl transition-colors"
               >
                 <Phone className="w-4 h-4" />
-                Appeler
+                {annonce.user.phone}
               </a>
             ) : (
               <button
@@ -186,6 +186,10 @@ export default async function AnnonceDetailPage({ params }: Props) {
             <button className="flex items-center justify-center gap-2 btn-turquoise text-sm py-3 rounded-xl">
               <MessageCircle className="w-4 h-4" />
               Message
+            </button>
+            <button className="flex items-center justify-center gap-2 btn-turquoise text-sm py-3 rounded-xl">
+              <BanknoteArrowDown className="w-4 h-4"/>
+              M'Vola
             </button>
           </div>
 
