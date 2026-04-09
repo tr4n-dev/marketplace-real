@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 // ─── Types ───────────────────────────────────────────────
 interface UserProfile {
@@ -74,8 +75,8 @@ const IconLoader = () => (
 
 // ─── Composant principal ──────────────────────────────────
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
 
+  const { data: session, status } = useSession();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [form, setForm] = useState<FormState>({ name: "", phone: "", city: "", region: "" });
   const [loading, setLoading] = useState(true);
@@ -84,10 +85,16 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
 
+  const params = useParams();
+  
+  const id = params.id as string;
+  const isMe = () : boolean => {
+    return session?.user?.id === id;
+  }
   // Charger le profil
   useEffect(() => {
     if (status === "authenticated") {
-      fetch("/api/profile")
+      fetch(`/api/profile/${id}`)
         .then((r) => r.json())
         .then((data: UserProfile) => {
           setProfile(data);
@@ -268,7 +275,7 @@ export default function ProfilePage() {
             <h2 className="font-semibold text-stone-800 text-sm sm:text-base">
               Informations personnelles
             </h2>
-            {!editMode && (
+            {(!editMode && isMe()) && (
               <button
                 onClick={() => setEditMode(true)}
                 className="flex items-center gap-1.5 text-orange-500 hover:text-orange-600 text-sm font-medium transition-colors"
@@ -408,6 +415,7 @@ export default function ProfilePage() {
                 value={profile?.phone}
                 empty="Non renseigné"
                 highlight={!profile?.phone}
+                isMe={isMe()}
               />
               <InfoRow
                 icon={<IconMapPin />}
@@ -438,12 +446,14 @@ function InfoRow({
   value,
   empty = "Non renseigné",
   highlight = false,
+  isMe = false
 }: {
   icon: React.ReactNode;
   label: string;
   value: string | null | undefined;
   empty?: string;
   highlight?: boolean;
+  isMe?: boolean;
 }) {
   return (
     <div className="flex items-start gap-3 py-3.5">
@@ -455,7 +465,7 @@ function InfoRow({
         ) : (
           <p className={`text-sm italic ${highlight ? "text-orange-400" : "text-stone-300"}`}>
             {empty}
-            {highlight && " · Ajoute-le pour tes annonces"}
+            {(isMe && highlight) && " · Ajoute-le pour tes annonces"}
           </p>
         )}
       </div>
