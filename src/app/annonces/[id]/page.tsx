@@ -6,6 +6,9 @@ import { MapPin, Eye, Clock, Phone, MessageCircle, Heart, ChevronLeft, Shield, B
 import { getAnnonceById, incrementerVues } from "@/lib/annonces"
 import type { Metadata } from "next"
 import { ImageSlider } from "@/components/annonces/ImagesSlider"
+import { authOptions } from "@/lib/auth"
+import { getServerSession } from "next-auth"
+import { FavoriteIcon } from "@/components/annonces/FavoriteIcon"
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
@@ -47,15 +50,16 @@ function formatDateRelative(date: Date): string {
 }
 
 export default async function AnnonceDetailPage({ params }: Props) {
-  const { id } = await params
-  const annonce = await getAnnonceById(id)
-  if (!annonce) notFound()
+  const { id } = await params;
+  const annonce = await getAnnonceById(id);
+  if (!annonce) notFound();
 
-  void incrementerVues(id)
+  void incrementerVues(id);
 
-  const estGratuit = annonce.typesPrix === "GRATUIT"
-  const prixFormate = formatPrix(annonce.prix, annonce.typesPrix)
+  const estGratuit = annonce.typesPrix === "GRATUIT";
+  const prixFormate = formatPrix(annonce.prix, annonce.typesPrix);
 
+  console.log("donc l'annonce", annonce)
   return (
     <div className="max-w-lg mx-auto px-3 py-4 sm:py-6">
 
@@ -158,10 +162,7 @@ export default async function AnnonceDetailPage({ params }: Props) {
                 Membre depuis {formatDate(annonce.user.createdAt)}
               </p>
             </div>
-            {/* Favori */}
-            <button className="p-2 rounded-full border border-gray-200 hover:border-primary hover:text-primary transition-colors">
-              <Heart className="w-4 h-4 text-gray-400" />
-            </button>
+            <FavoriteIcon annonceId={id}/>
           </div>
 
           {/* Boutons contact */}

@@ -51,7 +51,7 @@ export function AnnonceCard({ annonce }: { annonce: AnnonceCard }) {
 
         {/* Badge catégorie */}
         <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2 py-1 rounded-full text-gray-700 border border-gray-100">
-          {annonce.categorie.nom}
+          {/* {annonce.categorie.nom} */}
         </span>
 
         {/* Badge gratuit */}

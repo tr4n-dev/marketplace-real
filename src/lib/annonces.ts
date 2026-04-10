@@ -185,6 +185,7 @@ export async function getAnnonceById(id: string): Promise<AnnonceDetail | null> 
           phone: true,
         },
       },
+      favorites: true
     },
   }) as any;
 }
