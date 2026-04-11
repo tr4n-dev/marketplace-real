@@ -2,12 +2,13 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { Search, Menu, X, Plus, MapPin, Heart } from "lucide-react"
+import { Search, Menu, X, Plus, MapPin, Heart, ChevronDown } from "lucide-react"
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
 export function Navbar() {
   const [menuOuvert, setMenuOuvert] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const { data: session, status } = useSession();
 
   return (
@@ -79,9 +80,31 @@ export function Navbar() {
               >
                 <Heart className="w-5 h-5" />
               </Link>
-              <div className="flex items-center gap-2">
+              <button
+                onClick={() => setMenuOuvert(!menuOuvert)}
+                className="flex items-center gap-2 text-sm text-gray-600 hover:text-turquoise font-medium transition-colors md:hidden"
+              >
                 {session.user.image ? (
-                  <Link href={`/profile/${session.user.id}`} className="text-sm text-gray-600 hover:text-turquoise font-medium transition-colors">
+                  <Image
+                    src={session.user.image}
+                    alt={session.user.name ?? ""}
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-turquoise flex items-center justify-center text-white text-sm font-bold">
+                    {session.user.name?.[0]?.toUpperCase()}
+                  </div>
+                )}
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <div className="relative md:block hidden">
+                <button
+                  onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-turquoise font-medium transition-colors"
+                >
+                  {session.user.image ? (
                     <Image
                       src={session.user.image}
                       alt={session.user.name ?? ""}
@@ -89,17 +112,64 @@ export function Navbar() {
                       height={32}
                       className="rounded-full"
                     />
-                  </Link>
-                ) : (<div className="w-8 h-8 rounded-full bg-turquoise flex items-center justify-center text-white text-sm font-bold">
-                  {session.user.name?.[0]?.toUpperCase()}
-                </div>
-                )}
-                <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
-                  className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-                >
-                  Déconnexion
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-turquoise flex items-center justify-center text-white text-sm font-bold">
+                      {session.user.name?.[0]?.toUpperCase()}
+                    </div>
+                  )}
+                  <ChevronDown className="w-4 h-4" />
                 </button>
+
+                {/* Dropdown Menu */}
+                {profileDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                    <Link
+                      href={`/profile/${session.user.id}`}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setProfileDropdownOpen(false)}
+                    >
+                      Mon Profil
+                    </Link>
+                    <Link
+                      href="/mes-annonces"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setProfileDropdownOpen(false)}
+                    >
+                      Mes Annonces
+                    </Link>
+                    <Link
+                      href="/mes-achats"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setProfileDropdownOpen(false)}
+                    >
+                      Mes Achats
+                    </Link>
+                    <Link
+                      href="/mes-favoris"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setProfileDropdownOpen(false)}
+                    >
+                      Mes Favoris
+                    </Link>
+                    <Link
+                      href="/parametres"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setProfileDropdownOpen(false)}
+                    >
+                      Paramètres
+                    </Link>
+                    <hr className="my-1 border-gray-200" />
+                    <button
+                      onClick={() => {
+                        signOut({ callbackUrl: "/" });
+                        setProfileDropdownOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      Déconnexion
+                    </button>
+                  </div>
+                )}
               </div>
             </>
 
@@ -109,34 +179,12 @@ export function Navbar() {
               Se connecter
             </Link>
           )}
-
-          <button
-            className="md:hidden p-1"
-            onClick={() => setMenuOuvert(!menuOuvert)}
-            aria-label="Menu"
-          >
-            {menuOuvert
-              ? <X className="w-6 h-6 text-gray-700" />
-              : <Menu className="w-6 h-6 text-gray-700" />
-            }
-          </button>
-
         </div>
       </div>
 
       {/* Menu mobile */}
       {menuOuvert && (
         <div className="md:hidden border-t-2 border-primary bg-white px-4 py-4 flex flex-col gap-3">
-          <div className="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden">
-            <input
-              type="text"
-              placeholder="Rechercher… Karohy"
-              className="flex-1 px-4 py-2 text-sm outline-none"
-            />
-            <button className="bg-turquoise px-4 py-2.5">
-              <Search className="w-4 h-4 text-white" />
-            </button>
-          </div>
           {
             session ?
               <>
@@ -148,10 +196,54 @@ export function Navbar() {
                   <Plus className="w-4 h-4 inline mr-2" />
                   Déposer une annonce
                 </Link>
+                <Link
+                  href={`/profile/${session.user.id}`}
+                  className="flex items-center gap-3 text-sm text-gray-700 py-2"
+                  onClick={() => setMenuOuvert(false)}
+                >
+                  <div className="w-6 h-6 rounded-full bg-turquoise flex items-center justify-center text-white text-xs font-bold">
+                    {session.user.name?.[0]?.toUpperCase()}
+                  </div>
+                  Mon Profil
+                </Link>
+                <Link
+                  href="/mes-annonces"
+                  className="flex items-center gap-3 text-sm text-gray-700 py-2"
+                  onClick={() => setMenuOuvert(false)}
+                >
+                  <Plus className="w-4 h-4 text-gray-400" />
+                  Mes Annonces
+                </Link>
+                <Link
+                  href="/mes-achats"
+                  className="flex items-center gap-3 text-sm text-gray-700 py-2"
+                  onClick={() => setMenuOuvert(false)}
+                >
+                  <div className="w-4 h-4 text-gray-400" />
+                  Mes Achats
+                </Link>
                 <Link href="/favoris" onClick={() => setMenuOuvert(false)}
                   className="flex items-center gap-3 text-sm text-gray-700 py-2">
                   <Heart className="w-4 h-4 text-gray-400" /> Mes favoris
                 </Link>
+                <Link
+                  href="/parametres"
+                  className="flex items-center gap-3 text-sm text-gray-700 py-2"
+                  onClick={() => setMenuOuvert(false)}
+                >
+                  <div className="w-4 h-4 text-gray-400" />
+                  Paramètres
+                </Link>
+                <button
+                  onClick={() => {
+                    signOut({ callbackUrl: "/" });
+                    setMenuOuvert(false);
+                  }}
+                  className="flex items-center gap-3 text-sm text-gray-700 py-2 w-full text-left"
+                >
+                  <div className="w-4 h-4 text-gray-400" />
+                  Déconnexion
+                </button>
               </>
               :
               <Link
@@ -162,6 +254,16 @@ export function Navbar() {
                 Se connecter
               </Link>
           }
+          <div className="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden">
+            <input
+              type="text"
+              placeholder="Rechercher… Karohy"
+              className="flex-1 px-4 py-2 text-sm outline-none"
+            />
+            <button className="bg-turquoise px-4 py-2.5">
+              <Search className="w-4 h-4 text-white" />
+            </button>
+          </div>
         </div>
       )}
     </header>
