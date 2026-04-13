@@ -36,7 +36,7 @@ export default async function FavoritesPage() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
           {annonces.map((a: any) => (
-            <AnnonceCard key={a.id} annonce={a.annonce} />
+            <AnnonceCard key={a.id} annonce={a.annonce} isFavorite={true} />
           ))}
         </div>
       )}

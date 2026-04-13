@@ -1,7 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import { MapPin, Eye } from "lucide-react"
 import type { AnnonceCard } from "@/lib/annonces"
+import { FavoriteIcon } from "@/components/annonces/FavoriteIcon"
 
 function formatPrix(prix: number | null, typePrix: string): string {
   if (typePrix === "GRATUIT") return "Maimbo / Gratuit"
@@ -24,7 +27,7 @@ function formatDateRelative(date: Date): string {
   return new Intl.DateTimeFormat("fr-FR").format(new Date(date))
 }
 
-export function AnnonceCard({ annonce }: { annonce: AnnonceCard }) {
+export function AnnonceCard({ annonce, isFavorite = false }: { annonce: AnnonceCard; isFavorite?: boolean }) {
   const imagePrincipale = annonce.images[0]
   const isFree = annonce.typesPrix === "GRATUIT"
 
@@ -54,12 +57,20 @@ export function AnnonceCard({ annonce }: { annonce: AnnonceCard }) {
           {/* {annonce.categorie.nom} */}
         </span>
 
-        {/* Badge gratuit */}
-        {isFree && (
-          <span className="absolute top-2 right-2 bg-turquoise text-white text-xs font-bold px-2 py-1 rounded-full">
-            Maimbo
-          </span>
-        )}
+        {/* Actions (Favorite) */}
+        <div className="absolute top-2 right-2 flex gap-1">
+          {/* FavoriteIcon - standalone component */}
+          <div className="p-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-gray-100 hover:bg-white transition-colors" title="Mettre en favori">
+            <FavoriteIcon annonceId={annonce.id} initialLiked={isFavorite} />
+          </div>
+          
+          {/* Badge gratuit */}
+          {isFree && (
+            <span className="bg-turquoise text-white text-xs font-bold px-2 py-1 rounded-full">
+              Maimbo
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Contenu — plus compact sur mobile */}

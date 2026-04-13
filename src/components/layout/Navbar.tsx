@@ -145,7 +145,7 @@ export function Navbar() {
                       Mes Achats
                     </Link>
                     <Link
-                      href="/mes-favoris"
+                      href="/favoris"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                       onClick={() => setProfileDropdownOpen(false)}
                     >

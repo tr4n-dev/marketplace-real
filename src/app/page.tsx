@@ -1,11 +1,17 @@
 import Link from "next/link"
 import { AnnonceCard } from "@/components/annonces/AnnonceCard"
-import { getAnnoncesRecentes, getCategoriesAvecNombre } from "@/lib/annonces"
+import { getAnnoncesWithFavorites, getCategoriesAvecNombre } from "@/lib/annonces"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 import { Search, TrendingUp, Shield, MapPin } from "lucide-react"
 
 export default async function HomePage() {
-  const [annonces, categories] = await Promise.all([
-    getAnnoncesRecentes(8),
+  // Get session for favorites
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+
+  const [{ annonces }, categories] = await Promise.all([
+    getAnnoncesWithFavorites({ page: 1 }, userId),
     getCategoriesAvecNombre(),
   ])
 
@@ -129,8 +135,8 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {annonces.map((annonce) => (
-                <AnnonceCard key={annonce.id} annonce={annonce} />
+              {annonces.slice(0, 8).map((annonce) => (
+                <AnnonceCard key={annonce.id} annonce={annonce} isFavorite={annonce.isFavorite} />
               ))}
             </div>
           )}

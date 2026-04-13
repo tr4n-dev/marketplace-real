@@ -25,7 +25,7 @@ export function FavoriteIcon({ annonceId, initialLiked = false }: Props) {
 			await toggleFavorite({ annonceId: annonceId });
 		});
 	}
-	return <button onClick={handleClick} disabled={isPending} className="p-2 rounded-full border border-gray-200 hover:border-primary hover:text-primary transition-colors">
-		<Heart className={`w-4 h-4 ${liked ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
+	return <button onClick={handleClick} disabled={isPending} className="p-2 rounded-full border border-gray-200 hover:border-turquoise hover:text-turquoise transition-colors">
+		<Heart className={`w-4 h-4 ${liked ? "fill-red-400 text-red-400" : "text-gray-400"}`} />
 	</button>
 }

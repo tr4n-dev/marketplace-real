@@ -1,10 +1,12 @@
 // src/app/annonces/page.tsx
 import { Suspense } from "react"
-import { getAnnonces, getCategoriesAvecNombre } from "@/lib/annonces"
+import { getAnnoncesWithFavorites, getCategoriesAvecNombre } from "@/lib/annonces"
 import { AnnonceCard } from "@/components/annonces/AnnonceCard"
 import { FiltresRecherche } from "@/components/annonces/FiltresRecherche"
 import { FiltresDrawer } from "@/components/annonces/FiltresDrawer"
 import { Pagination } from "@/components/annonces/Pagination"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -27,8 +29,12 @@ export default async function AnnoncesPage({ searchParams }: Props) {
   const params = await searchParams
   const page = Number(params.page ?? 1)
 
+  // Get session for favorites
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+
   const [{ annonces, total, pages }, categories] = await Promise.all([
-    getAnnonces({
+    getAnnoncesWithFavorites({
       recherche: params.recherche,
       categorie: params.categorie,
       ville: params.ville,
@@ -36,7 +42,7 @@ export default async function AnnoncesPage({ searchParams }: Props) {
       prixMax: params.prixMax ? Number(params.prixMax) : undefined,
       typePrix: params.typePrix,
       page,
-    }),
+    }, userId),
     getCategoriesAvecNombre(),
   ])
 
@@ -125,7 +131,7 @@ export default async function AnnoncesPage({ searchParams }: Props) {
               {/* Grille — 2 colonnes sur mobile (360px+), 3 sur md */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
                 {annonces.map((annonce) => (
-                  <AnnonceCard key={annonce.id} annonce={annonce as any} />
+                  <AnnonceCard key={annonce.id} annonce={annonce as any} isFavorite={annonce.isFavorite} />
                 ))}
               </div>
 

@@ -226,3 +226,71 @@ export async function getAnnoncesByUser(userId: string): Promise<AnnonceCard[]> 
     },
   }) as any;
 }
+
+// Récupère les annonces avec statut favori pour l'utilisateur connecté
+export async function getAnnoncesWithFavorites(filtres: FiltresAnnonces = {}, userId?: string) {
+  const { recherche, categorie, ville, prixMin, prixMax, typePrix, page = 1 } = filtres
+
+  // On construit le "where" dynamiquement selon les filtres actifs
+  const where: Prisma.AnnonceWhereInput = {
+    statut: "ACTIVE",
+
+    ...(recherche && {
+      OR: [
+        { titre: { contains: recherche, mode: "insensitive" } },
+        { description: { contains: recherche, mode: "insensitive" } },
+      ],
+    }),
+
+    ...(categorie && {
+      categorie: { slug: categorie },
+    }),
+
+    ...(ville && {
+      localisation: { contains: ville, mode: "insensitive" },
+    }),
+
+    ...(prixMin !== undefined || prixMax !== undefined ? {
+      prix: {
+        ...(prixMin !== undefined && { gte: prixMin }),
+        ...(prixMax !== undefined && { lte: prixMax }),
+      },
+    } : {}),
+
+    ...(typePrix && {
+      typesPrix: typePrix as "FIXE" | "NEGOCIABLE" | "GRATUIT" | "ECHANGE",
+    }),
+  }
+
+  const [annonces, total] = await Promise.all([
+    prisma.annonce.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * PAR_PAGE,
+      take: PAR_PAGE,
+      include: {
+        images: { where: { ordre: 0 }, take: 1 },
+        categorie: true,
+        user: { select: { name: true, image: true } },
+        favorites: userId ? {
+          where: { userId },
+          select: { userId: true },
+        } : false,
+      },
+    }),
+    prisma.annonce.count({ where }),
+  ])
+
+  // Transform annonces to include isFavorite boolean
+  const annoncesWithFavoriteStatus = annonces.map(annonce => ({
+    ...annonce,
+    isFavorite: userId ? annonce.favorites.length > 0 : false,
+  }))
+
+  return {
+    annonces: annoncesWithFavoriteStatus,
+    total,
+    pages: Math.ceil(total / PAR_PAGE),
+    page,
+  }
+}
