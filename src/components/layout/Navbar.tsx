@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { Search, Menu, X, Plus, MapPin, Heart, ChevronDown } from "lucide-react"
+import { Search, Menu, X, Plus, MapPin, Heart, ChevronDown, MessageCircle } from "lucide-react"
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
@@ -73,6 +73,13 @@ export function Navbar() {
                 Déposer une annonce
               </Link>
 
+              <Link
+                href="/messages"
+                className="p-2 rounded-xl text-gray-500 hover:text-turquoise hover:bg-turquoise/10 transition-colors"
+                title="Mes messages"
+              >
+                <MessageCircle className="w-5 h-5" />
+              </Link>
               <Link
                 href="/favoris"
                 className="p-2 rounded-xl text-gray-500 hover:text-red-500 hover:bg-red-50 transition-colors"
@@ -175,9 +182,14 @@ export function Navbar() {
 
           ) : (
             // Non connecté
-            <Link href="/auth/connexion" className="text-sm text-gray-600 hover:text-turquoise font-medium transition-colors">
-              Se connecter
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/auth/inscription" className="text-sm text-turquoise hover:text-turquoise-hover font-medium transition-colors">
+                S'inscrire
+              </Link>
+              <Link href="/auth/connexion" className="text-sm text-gray-600 hover:text-turquoise font-medium transition-colors">
+                Se connecter
+              </Link>
+            </div>
           )}
         </div>
       </div>
@@ -222,6 +234,10 @@ export function Navbar() {
                   <div className="w-4 h-4 text-gray-400" />
                   Mes Achats
                 </Link>
+                <Link href="/messages" onClick={() => setMenuOuvert(false)}
+                  className="flex items-center gap-3 text-sm text-gray-700 py-2">
+                  <MessageCircle className="w-4 h-4 text-gray-400" /> Mes messages
+                </Link>
                 <Link href="/favoris" onClick={() => setMenuOuvert(false)}
                   className="flex items-center gap-3 text-sm text-gray-700 py-2">
                   <Heart className="w-4 h-4 text-gray-400" /> Mes favoris
@@ -246,13 +262,22 @@ export function Navbar() {
                 </button>
               </>
               :
-              <Link
-                href="/auth/connexion"
-                className="text-sm text-center text-gray-600"
-                onClick={() => setMenuOuvert(false)}
-              >
-                Se connecter
-              </Link>
+              <div className="space-y-2">
+                <Link
+                  href="/auth/inscription"
+                  className="text-sm text-center text-turquoise block"
+                  onClick={() => setMenuOuvert(false)}
+                >
+                  S'inscrire
+                </Link>
+                <Link
+                  href="/auth/connexion"
+                  className="text-sm text-center text-gray-600 block"
+                  onClick={() => setMenuOuvert(false)}
+                >
+                  Se connecter
+                </Link>
+              </div>
           }
           <div className="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden">
             <input

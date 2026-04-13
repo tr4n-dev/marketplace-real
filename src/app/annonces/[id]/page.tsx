@@ -223,14 +223,16 @@ export default async function AnnonceDetailPage({ params }: Props) {
           {/* ── Séparateur ── */}
           <div className="h-px bg-gray-100" />
 
-          {/* ── Chat avec le vendeur ── */}
+          {/* Chat avec le vendeur */}
           {session?.user?.id && !isOwner && (
-            <InlineChat
-              annonceId={id}
-              vendeurId={annonce.user.id}
-              vendeurName={annonce.user.name ?? "Vendeur"}
-              currentUserId={session.user.id}
-            />
+            <div id="chat">
+              <InlineChat
+                annonceId={id}
+                vendeurId={annonce.user.id}
+                vendeurName={annonce.user.name ?? "Vendeur"}
+                currentUserId={session.user.id}
+              />
+            </div>
           )}
 
           {/* ── Séparateur ── */}
