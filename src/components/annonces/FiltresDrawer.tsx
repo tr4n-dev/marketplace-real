@@ -4,7 +4,7 @@
 
 import { useState } from "react"
 import { SlidersHorizontal, X } from "lucide-react"
-import { FiltresRecherche } from "./FiltresRecherche"
+import { SearchFilter } from "./SearchFilter"
 
 type Props = {
   categories: { slug: string; nom: string }[]
@@ -58,9 +58,9 @@ export function FiltresDrawer({ categories, totalAnnonces }: Props) {
           </button>
         </div>
 
-        {/* Contenu — le même composant FiltresRecherche */}
+        {/* Contenu — le même composant SearchFilter */}
         <div className="p-4">
-          <FiltresRecherche categories={categories} />
+          <SearchFilter categories={categories} />
         </div>
 
         {/* Bouton "Voir les résultats" en bas */}

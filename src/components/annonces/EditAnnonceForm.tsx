@@ -46,7 +46,7 @@ export function EditAnnonceForm({ annonce }: EditAnnonceFormProps) {
   }
 
   const handleTypesPrixChange = (value: string) => {
-    setFormData(prev => ({
+    setFormData((prev: any) => ({
       ...prev,
       typesPrix: value,
       prix: (value === "GRATUIT" || value === "ECHANGE") ? "" : prev.prix,

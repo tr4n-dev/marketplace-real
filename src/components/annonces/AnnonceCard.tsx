@@ -60,10 +60,7 @@ export function AnnonceCard({ annonce, isFavorite = false }: { annonce: AnnonceC
         {/* Actions (Favorite) */}
         <div className="absolute top-2 right-2 flex gap-1">
           {/* FavoriteIcon - standalone component */}
-          <div className="p-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-gray-100 hover:bg-white transition-colors" title="Mettre en favori">
-            <FavoriteIcon annonceId={annonce.id} initialLiked={isFavorite} />
-          </div>
-          
+
           {/* Badge gratuit */}
           {isFree && (
             <span className="bg-turquoise text-white text-xs font-bold px-2 py-1 rounded-full">
@@ -75,9 +72,12 @@ export function AnnonceCard({ annonce, isFavorite = false }: { annonce: AnnonceC
 
       {/* Contenu — plus compact sur mobile */}
       <div className="p-2 sm:p-3 flex flex-col gap-1 flex-1">
-        <h3 className="text-xs sm:text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-turquoise transition-colors leading-snug">
-          {annonce.titre}
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-xs sm:text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-turquoise transition-colors leading-snug">
+            {annonce.titre}
+          </h3>
+          <FavoriteIcon annonceId={annonce.id} initialLiked={isFavorite} />
+        </div>
 
         <p className={`font-bold text-sm sm:text-base ${isFree ? "text-turquoise" : "text-gray-900"}`}>
           {formatPrix(annonce.prix, annonce.typesPrix)}

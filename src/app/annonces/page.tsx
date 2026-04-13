@@ -2,7 +2,7 @@
 import { Suspense } from "react"
 import { getAnnoncesWithFavorites, getCategoriesAvecNombre } from "@/lib/annonces"
 import { AnnonceCard } from "@/components/annonces/AnnonceCard"
-import { FiltresRecherche } from "@/components/annonces/FiltresRecherche"
+import { SearchFilter } from "@/components/annonces/SearchFilter"
 import { FiltresDrawer } from "@/components/annonces/FiltresDrawer"
 import { Pagination } from "@/components/annonces/Pagination"
 import { getServerSession } from "next-auth"
@@ -98,7 +98,7 @@ export default async function AnnoncesPage({ searchParams }: Props) {
         {/* Sidebar filtres — desktop uniquement */}
         <aside className="hidden lg:block w-72 shrink-0">
           <Suspense fallback={<div className="bg-white rounded-2xl h-96 animate-pulse" />}>
-            <FiltresRecherche categories={categories} />
+            <SearchFilter categories={categories} />
           </Suspense>
         </aside>
 

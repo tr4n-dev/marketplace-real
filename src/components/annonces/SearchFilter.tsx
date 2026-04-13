@@ -1,4 +1,4 @@
-// src/components/annonces/FiltresRecherche.tsx
+// src/components/annonces/SearchFilter.tsx
 "use client"
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation"
@@ -9,7 +9,7 @@ type Props = {
   categories: { slug: string; nom: string }[]
 }
 
-export function FiltresRecherche({ categories }: Props) {
+export function SearchFilter({ categories }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
