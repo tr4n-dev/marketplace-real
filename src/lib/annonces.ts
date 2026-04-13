@@ -201,3 +201,28 @@ export async function incrementerVues(id: string) {
     },
   })
 }
+
+// Récupère toutes les annonces d'un utilisateur
+export async function getAnnoncesByUser(userId: string): Promise<AnnonceCard[]> {
+  return prisma.annonce.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: "desc", // Les plus récentes en premier
+    },
+    include: {
+      images: {
+        where: { ordre: 0 }, // Seulement l'image principale (ordre = 0)
+        take: 1,
+      },
+      categorie: true,
+      user: {
+        select: {
+          name: true,
+          image: true,
+        },
+      },
+    },
+  }) as any;
+}

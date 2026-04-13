@@ -9,6 +9,7 @@ import { ImageSlider } from "@/components/annonces/ImagesSlider"
 import { authOptions } from "@/lib/auth"
 import { getServerSession } from "next-auth"
 import { FavoriteIcon } from "@/components/annonces/FavoriteIcon"
+import { AnnonceActions } from "@/components/annonces/AnnonceActions"
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
@@ -51,13 +52,18 @@ function formatDateRelative(date: Date): string {
 
 export default async function AnnonceDetailPage({ params }: Props) {
   const { id } = await params;
-  const annonce = await getAnnonceById(id);
+  const [annonce, session] = await Promise.all([
+    getAnnonceById(id),
+    getServerSession(authOptions)
+  ]);
+  
   if (!annonce) notFound();
 
   void incrementerVues(id);
 
   const estGratuit = annonce.typesPrix === "GRATUIT";
   const prixFormate = formatPrix(annonce.prix, annonce.typesPrix);
+  const isOwner = session?.user?.id === annonce.user.id;
 
   console.log("donc l'annonce", annonce)
   return (
@@ -107,15 +113,25 @@ export default async function AnnonceDetailPage({ params }: Props) {
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         <div className="px-4 pt-5 pb-4 space-y-4">
 
-          {/* Badges catégorie */}
-          <div className="flex flex-wrap gap-2">
-            <span className="bg-turquoise/10 text-turquoise text-xs font-semibold px-3 py-1 rounded-full">
-              {annonce.categorie.nom}
-            </span>
-            {annonce.typesPrix === "NEGOCIABLE" && (
-              <span className="bg-primary/20 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full">
-                Négociable
+          {/* Badges catégorie + Actions */}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap gap-2">
+              <span className="bg-turquoise/10 text-turquoise text-xs font-semibold px-3 py-1 rounded-full">
+                {annonce.categorie.nom}
               </span>
+              {annonce.typesPrix === "NEGOCIABLE" && (
+                <span className="bg-primary/20 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full">
+                  Négociable
+                </span>
+              )}
+            </div>
+            
+            {/* Actions for owner */}
+            {isOwner && (
+              <AnnonceActions 
+                annonceId={id} 
+                isOwner={isOwner}
+              />
             )}
           </div>
 
