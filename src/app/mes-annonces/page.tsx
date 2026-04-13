@@ -74,7 +74,7 @@ export default async function MesAnnoncesPage() {
             Commencez à vendre en publiant votre première annonce
           </p>
           <Link
-            href="/annonces/nouvelle"
+            href="/annonces/creer"
             className="btn-turquoise inline-flex items-center gap-2 px-6 py-3 rounded-lg"
           >
             <Plus className="w-4 h-4" />
@@ -99,7 +99,7 @@ export default async function MesAnnoncesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {annonces.map((annonce) => (
               <div key={annonce.id} className="relative group">
-                <AnnonceCard annonce={annonce} />
+                <AnnonceCard annonce={annonce} isFavorite={true}/>
                 
                 {/* Badge de statut */}
                 <div className="absolute top-2 left-2 z-10">

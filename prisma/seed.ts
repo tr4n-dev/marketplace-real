@@ -88,7 +88,7 @@ async function main() {
     update: {},
     create: {
       email: "admin@test.com",
-      fullname: "admin",
+      name: "admin",
       password: "hashed_password", // on hashe proprement à l'étape auth
     },
   })
