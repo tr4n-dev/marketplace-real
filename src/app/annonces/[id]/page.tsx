@@ -10,6 +10,7 @@ import { authOptions } from "@/lib/auth"
 import { getServerSession } from "next-auth"
 import { FavoriteIcon } from "@/components/annonces/FavoriteIcon"
 import { AnnonceActions } from "@/components/annonces/AnnonceActions"
+import { InlineChat } from "@/components/annonces/InlineChat"
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
@@ -201,10 +202,6 @@ export default async function AnnonceDetailPage({ params }: Props) {
               </button>
             )}
             <button className="flex items-center justify-center gap-2 btn-turquoise text-sm py-3 rounded-xl">
-              <MessageCircle className="w-4 h-4" />
-              Message
-            </button>
-            <button className="flex items-center justify-center gap-2 btn-turquoise text-sm py-3 rounded-xl">
               <BanknoteArrowDown className="w-4 h-4"/>
               M'Vola
             </button>
@@ -222,6 +219,19 @@ export default async function AnnonceDetailPage({ params }: Props) {
               {annonce.description}
             </p>
           </div>
+
+          {/* ── Séparateur ── */}
+          <div className="h-px bg-gray-100" />
+
+          {/* ── Chat avec le vendeur ── */}
+          {session?.user?.id && !isOwner && (
+            <InlineChat
+              annonceId={id}
+              vendeurId={annonce.user.id}
+              vendeurName={annonce.user.name ?? "Vendeur"}
+              currentUserId={session.user.id}
+            />
+          )}
 
           {/* ── Séparateur ── */}
           <div className="h-px bg-gray-100" />
