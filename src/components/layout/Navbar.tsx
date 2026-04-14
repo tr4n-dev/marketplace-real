@@ -75,14 +75,14 @@ export function Navbar() {
 
               <Link
                 href="/messages"
-                className="p-2 rounded-xl text-gray-500 hover:text-turquoise hover:bg-turquoise/10 transition-colors"
+                className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:text-turquoise hover:bg-turquoise/10 transition-colors"
                 title="Mes messages"
               >
                 <MessageCircle className="w-5 h-5" />
               </Link>
               <Link
                 href="/favoris"
-                className="p-2 rounded-xl text-gray-500 hover:text-red-500 hover:bg-red-50 transition-colors"
+                className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:text-red-500 hover:bg-red-50 transition-colors"
                 title="Mes favoris"
               >
                 <Heart className="w-5 h-5" />
@@ -198,86 +198,15 @@ export function Navbar() {
       {menuOuvert && (
         <div className="md:hidden border-t-2 border-primary bg-white px-4 py-4 flex flex-col gap-3">
           {
-            session ?
-              <>
-                <Link
-                  href="/annonces/creer"
-                  className="btn-primary text-sm text-center"
-                  onClick={() => setMenuOuvert(false)}
-                >
-                  <Plus className="w-4 h-4 inline mr-2" />
-                  Déposer une annonce
-                </Link>
-                <Link
-                  href={`/profile/${session.user.id}`}
-                  className="flex items-center gap-3 text-sm text-gray-700 py-2"
-                  onClick={() => setMenuOuvert(false)}
-                >
-                  <div className="w-6 h-6 rounded-full bg-turquoise flex items-center justify-center text-white text-xs font-bold">
-                    {session.user.name?.[0]?.toUpperCase()}
-                  </div>
-                  Mon Profil
-                </Link>
-                <Link
-                  href="/mes-annonces"
-                  className="flex items-center gap-3 text-sm text-gray-700 py-2"
-                  onClick={() => setMenuOuvert(false)}
-                >
-                  <Plus className="w-4 h-4 text-gray-400" />
-                  Mes Annonces
-                </Link>
-                <Link
-                  href="/mes-achats"
-                  className="flex items-center gap-3 text-sm text-gray-700 py-2"
-                  onClick={() => setMenuOuvert(false)}
-                >
-                  <div className="w-4 h-4 text-gray-400" />
-                  Mes Achats
-                </Link>
-                <Link href="/messages" onClick={() => setMenuOuvert(false)}
-                  className="flex items-center gap-3 text-sm text-gray-700 py-2">
-                  <MessageCircle className="w-4 h-4 text-gray-400" /> Mes messages
-                </Link>
-                <Link href="/favoris" onClick={() => setMenuOuvert(false)}
-                  className="flex items-center gap-3 text-sm text-gray-700 py-2">
-                  <Heart className="w-4 h-4 text-gray-400" /> Mes favoris
-                </Link>
-                <Link
-                  href="/parametres"
-                  className="flex items-center gap-3 text-sm text-gray-700 py-2"
-                  onClick={() => setMenuOuvert(false)}
-                >
-                  <div className="w-4 h-4 text-gray-400" />
-                  Paramètres
-                </Link>
-                <button
-                  onClick={() => {
-                    signOut({ callbackUrl: "/" });
-                    setMenuOuvert(false);
-                  }}
-                  className="flex items-center gap-3 text-sm text-gray-700 py-2 w-full text-left"
-                >
-                  <div className="w-4 h-4 text-gray-400" />
-                  Déconnexion
-                </button>
-              </>
-              :
-              <div className="space-y-2">
-                <Link
-                  href="/auth/inscription"
-                  className="text-sm text-center text-turquoise block"
-                  onClick={() => setMenuOuvert(false)}
-                >
-                  S'inscrire
-                </Link>
-                <Link
-                  href="/auth/connexion"
-                  className="text-sm text-center text-gray-600 block"
-                  onClick={() => setMenuOuvert(false)}
-                >
-                  Se connecter
-                </Link>
-              </div>
+            session &&
+            <Link
+              href="/annonces/creer"
+              className="btn-primary text-sm text-center"
+              onClick={() => setMenuOuvert(false)}
+            >
+              <Plus className="w-4 h-4 inline mr-2" />
+              Déposer une annonce
+            </Link>
           }
           <div className="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden">
             <input
@@ -289,6 +218,81 @@ export function Navbar() {
               <Search className="w-4 h-4 text-white" />
             </button>
           </div>
+          {
+            session ?
+            <>
+              <Link
+                href={`/profile/${session.user.id}`}
+                className="flex items-center gap-3 text-sm text-gray-700 py-2"
+                onClick={() => setMenuOuvert(false)}
+              >
+                <div className="w-6 h-6 rounded-full bg-turquoise flex items-center justify-center text-white text-xs font-bold">
+                  {session.user.name?.[0]?.toUpperCase()}
+                </div>
+                Mon Profil
+              </Link>
+              <Link
+                href="/mes-annonces"
+                className="flex items-center gap-3 text-sm text-gray-700 py-2"
+                onClick={() => setMenuOuvert(false)}
+              >
+                <Plus className="w-4 h-4 text-gray-400" />
+                Mes Annonces
+              </Link>
+              <Link
+                href="/mes-achats"
+                className="flex items-center gap-3 text-sm text-gray-700 py-2"
+                onClick={() => setMenuOuvert(false)}
+              >
+                <div className="w-4 h-4 text-gray-400" />
+                Mes Achats
+              </Link>
+              <Link href="/messages" onClick={() => setMenuOuvert(false)}
+                className="flex items-center gap-3 text-sm text-gray-700 py-2">
+                <MessageCircle className="w-4 h-4 text-gray-400" /> Mes messages
+              </Link>
+              <Link href="/favoris" onClick={() => setMenuOuvert(false)}
+                className="flex items-center gap-3 text-sm text-gray-700 py-2">
+                <Heart className="w-4 h-4 text-gray-400" /> Mes favoris
+              </Link>
+              <Link
+                href="/parametres"
+                className="flex items-center gap-3 text-sm text-gray-700 py-2"
+                onClick={() => setMenuOuvert(false)}
+              >
+                <div className="w-4 h-4 text-gray-400" />
+                Paramètres
+              </Link>
+              <button
+                onClick={() => {
+                  signOut({ callbackUrl: "/" });
+                  setMenuOuvert(false);
+                }}
+                className="flex items-center gap-3 text-sm text-gray-700 py-2 w-full text-left"
+              >
+                <div className="w-4 h-4 text-gray-400" />
+                Déconnexion
+              </button>
+            </>
+            :
+            <div className="space-y-2">
+              <Link
+                href="/auth/inscription"
+                className="text-sm text-center text-turquoise block"
+                onClick={() => setMenuOuvert(false)}
+              >
+                S'inscrire
+              </Link>
+              <Link
+                href="/auth/connexion"
+                className="text-sm text-center text-gray-600 block"
+                onClick={() => setMenuOuvert(false)}
+              >
+                Se connecter
+              </Link>
+            </div>
+          }
+
         </div>
       )}
     </header>
