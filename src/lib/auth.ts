@@ -13,6 +13,8 @@ export const authOptions: NextAuthOptions = {
   // - la création du User en DB lors du premier login
   // - la création du Account lié (provider + providerAccountId)
   // - la gestion des Sessions
+
+  // @ts-ignore
   adapter: PrismaAdapter(prisma) as NextAuthOptions["adapter"],
 
   providers: [

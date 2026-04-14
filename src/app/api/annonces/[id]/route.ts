@@ -5,9 +5,9 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
 type Params = {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 // PATCH - Mettre à jour une annonce

@@ -5,9 +5,9 @@ import { authOptions } from "@/lib/auth"; // adapte selon ton chemin
 import { prisma } from "@/lib/prisma";   // adapte selon ton chemin
 
 type Params = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export async function GET(req: NextRequest, { params }: Params) {
