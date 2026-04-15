@@ -84,15 +84,3 @@ export async function getAnnonceById(id: string): Promise<AnnonceDetail | null> 
     },
   }) as any;
 }
-
-// Incrémente le compteur de vues d'une annonce
-// On utilise "update" avec un incrément atomique pour éviter les race conditions
-// (si deux personnes ouvrent l'annonce en même temps, les deux vues sont comptées)
-export async function incrementerVues(id: string) {
-  return prisma.annonce.update({
-    where: { id },
-    data: {
-      vues: { increment: 1 }, // UPDATE annonces SET vues = vues + 1 WHERE id = ?
-    },
-  })
-}

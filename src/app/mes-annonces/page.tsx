@@ -99,7 +99,7 @@ export default async function MesAnnoncesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {annonces.map((annonce) => (
               <div key={annonce.id} className="relative group">
-                <AnnonceCard annonce={annonce} isFavorite={true}/>
+                <AnnonceCard annonce={annonce} />
                 
                 {/* Badge de statut */}
                 <div className="absolute top-2 left-2 z-10">
