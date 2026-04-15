@@ -395,25 +395,331 @@ async function main() {
       statut: StatutAnnonce.ACTIVE,
       vues: 95,
     },
+
+    // ================= EMPLOI =================
     {
-      titre: "Livraison moto express",
-      description: "Courses et colis.",
-      prix: 10000,
+      titre: "Développeur Web Junior - Antananarivo",
+      description: "Recherche développeur React/Next.js. Connaissance de TypeScript requise. Salaire: 400000 Ar/mois + avantages.",
+      prix: 400000,
+      typesPrix: TypePrix.FIXE,
+      localisation: "Antananarivo",
+      codePostal: "101",
+      categorieId: await getCat("emploi"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 250,
+    },
+    {
+      titre: "Comptable confirmé - Cabinet Tana",
+      description: "Expérience 3+ ans requise. Maîtrise Sage/SAP. Rémunération attractive selon profil.",
+      prix: 600000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Antananarivo",
+      codePostal: "101",
+      categorieId: await getCat("emploi"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 180,
+    },
+    {
+      titre: "Agent commercial - Produits locaux",
+      description: "Mission: développer clientèle PME. Commission attractive. Permis B indispensable.",
+      prix: 350000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Toamasina",
+      codePostal: "501",
+      categorieId: await getCat("emploi"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 140,
+    },
+    {
+      titre: "Professeur particulier - Anglais/Français",
+      description: "Cours soutien scolaire tous niveaux. Horaires flexibles. Bon niveau linguistique requis.",
+      prix: 150000,
+      typesPrix: TypePrix.FIXE,
+      localisation: "Fianarantsoa",
+      codePostal: "301",
+      categorieId: await getCat("emploi"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 95,
+    },
+    {
+      titre: "Chauffeur VSL - Société transport",
+      description: "Permis B + 2 ans d'expérience. Connaissance voies Tana. Disponibilité immédiate.",
+      prix: 280000,
+      typesPrix: TypePrix.FIXE,
+      localisation: "Antananarivo",
+      codePostal: "101",
+      categorieId: await getCat("emploi"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 160,
+    },
+    {
+      titre: "Secrétaire bilingue - Hôtel Mahajanga",
+      description: "Français/Anglais courants. Master Office. Expérience hôtellerie appréciée.",
+      prix: 320000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Mahajanga",
+      codePostal: "401",
+      categorieId: await getCat("emploi"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 120,
+    },
+    {
+      titre: "Technicien maintenance informatique",
+      description: "Installation réseau, dépannage hardware/software. Déplacements sur Tana et environs.",
+      prix: 380000,
+      typesPrix: TypePrix.FIXE,
+      localisation: "Antananarivo",
+      codePostal: "101",
+      categorieId: await getCat("emploi"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 200,
+    },
+    {
+      titre: "Guide touristique - Nosy Be",
+      description: "Multilingue (français/anglais/italien). Connaissance parfaite sites touristiques. Saisonnier.",
+      prix: 450000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Nosy Be",
+      codePostal: "207",
+      categorieId: await getCat("emploi"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 110,
+    },
+
+    // ================= LOISIRS =================
+    {
+      titre: "Guitare acoustique Yamaha F310",
+      description: "Presque neuve, avec housse et métronome. Parfait pour débutant.",
+      prix: 250000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Antananarivo",
+      codePostal: "101",
+      categorieId: await getCat("loisirs"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 85,
+    },
+    {
+      titre: "Surfboard 7'0\" - Nosy Be",
+      description: "Planche en bon état, idéale vagues débutants. Livraison possible sur côte.",
+      prix: 180000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Nosy Be",
+      codePostal: "207",
+      categorieId: await getCat("loisirs"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 70,
+    },
+    {
+      titre: "Console PlayStation 4 + jeux",
+      description: "Manettes, 15 jeux variés. État impeccable. Vente cause passage PS5.",
+      prix: 650000,
       typesPrix: TypePrix.FIXE,
       localisation: "Toamasina",
       codePostal: "501",
-      categorieId: await getCat("services"),
+      categorieId: await getCat("loisirs"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 190,
+    },
+    {
+      titre: "Vélo de montagne 21 vitesses",
+      description: "Cadre aluminium, freins à disque. Entretenu régulièrement.",
+      prix: 320000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Antsirabe",
+      codePostal: "110",
+      categorieId: await getCat("loisirs"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 95,
+    },
+    {
+      titre: "Appareil photo Nikon D3500",
+      description: "Objectif 18-55mm + sacoche. Parfait pour photographie voyage Madagascar.",
+      prix: 850000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Antananarivo",
+      codePostal: "101",
+      categorieId: await getCat("loisirs"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 140,
+    },
+    {
+      titre: "Tente de camping 4 personnes",
+      description: "Imperméable, double toit. Utilisée 2 fois seulement. Idéale parc nationaux.",
+      prix: 150000,
+      typesPrix: TypePrix.FIXE,
+      localisation: "Fianarantsoa",
+      codePostal: "301",
+      categorieId: await getCat("loisirs"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 60,
+    },
+    {
+      titre: "Table de ping-pong pliante",
+      description: "Intérieur/extérieur. Filet et raquettes inclus. Dimensions réglementaires.",
+      prix: 280000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Mahajanga",
+      codePostal: "401",
+      categorieId: await getCat("loisirs"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 45,
+    },
+    {
+      titre: "Collection BD Tintin + Astérix",
+      description: "25 albums complets, bon état. Parfait collectionneur ou jeunes lecteurs.",
+      prix: 120000,
+      typesPrix: TypePrix.FIXE,
+      localisation: "Antananarivo",
+      codePostal: "101",
+      categorieId: await getCat("loisirs"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 55,
+    },
+
+    // ================= MAISON & JARDIN =================
+    {
+      titre: "Canne à pêche télescopique",
+      description: "3.60m, carbone, moulinet inclus. Parfait pêche lagune et rivière.",
+      prix: 95000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Mahajanga",
+      codePostal: "401",
+      categorieId: await getCat("maison-jardin"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 40,
+    },
+    {
+      titre: "Kit irrigation goutte-à-goutte",
+      description: "50m de tuyaux, 100 goutteurs. Idéal potager tropical.",
+      prix: 75000,
+      typesPrix: TypePrix.FIXE,
+      localisation: "Toamasina",
+      codePostal: "501",
+      categorieId: await getCat("maison-jardin"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 35,
+    },
+    {
+      titre: "Mobilier jardin - Table et 4 chaises",
+      description: "Résine tressée, aluminium. Protection UV. Livraison possible Tana.",
+      prix: 320000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Antananarivo",
+      codePostal: "101",
+      categorieId: await getCat("maison-jardin"),
       userId: user.id,
       statut: StatutAnnonce.ACTIVE,
       vues: 80,
     },
-  ]
+    {
+      titre: "Outils jardinage complet",
+      description: "Bêche, râteau, arrosoir, sécateur. Bois et métal de qualité.",
+      prix: 65000,
+      typesPrix: TypePrix.FIXE,
+      localisation: "Antsirabe",
+      codePostal: "110",
+      categorieId: await getCat("maison-jardin"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 25,
+    },
+    {
+      titre: "Barbecue charbon mobile",
+      description: "Roulettes, grille 60x40cm. Parfait soirées d'été malgaches.",
+      prix: 180000,
+      typesPrix: TypePrix.NEGOCIABLE,
+      localisation: "Fianarantsoa",
+      codePostal: "301",
+      categorieId: await getCat("maison-jardin"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 50,
+    },
+    {
+      titre: "Plantes aromatiques en pots",
+      description: "Basilic, menthe, romarin, thym. Bio, culture locale.",
+      prix: 45000,
+      typesPrix: TypePrix.FIXE,
+      localisation: "Antananarivo",
+      codePostal: "101",
+      categorieId: await getCat("maison-jardin"),
+      userId: user.id,
+      statut: StatutAnnonce.ACTIVE,
+      vues: 30,
+    },
+  ];
 
-
+  // Create annonces first
+  const createdAnnonces = [];
   for (const annonce of annonces) {
-    await prisma.annonce.create({ data: annonce })
+    const createdAnnonce = await prisma.annonce.create({ data: annonce });
+    createdAnnonces.push(createdAnnonce);
   }
-  
+
+  // Create images for each annonce with placeholder Cloudinary data
+  const images = [
+    // Véhicules images
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776265738/toyota-hilux_as31sr.jpg", publicId: "toyota-hilux_as31sr", ordre: 0, annonceIndex: 0 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776265737/moto-cross_xojdtd.jpg", publicId: "moto-cross_xojdtd", ordre: 0, annonceIndex: 3 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776266479/taxi-bajaj_ilajx1.jpg", publicId: "taxi-bajaj_ilajx1", ordre: 0, annonceIndex: 2 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776265738/yamaha-scooter_r3frj3.jpg", publicId: "yamaha-scooter_r3frj3", ordre: 0, annonceIndex: 1 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776265738/peugeot-206_xtgwa4.jpg", publicId: "peugeot-206_xtgwa4", ordre: 0, annonceIndex: 4 },
+    
+    // Immobilier images - no dmyseachc URLs, will be created without images
+    
+    // Multimédia images
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271588/samsung-21_fzhgxp.jpg", publicId: "samsung-21_fzhgxp", ordre: 0, annonceIndex: 10 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271590/tv-led_pdmh82.jpg", publicId: "tv-led_pdmh82", ordre: 0, annonceIndex: 12 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271587/powerbank-solaire_ddqmhe.jpg", publicId: "powerbank-solaire_ddqmhe", ordre: 0, annonceIndex: 13 },
+    
+    // Mode images
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271586/nike-shoes_klptsf.jpg", publicId: "nike-shoes_klptsf", ordre: 0, annonceIndex: 15 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271587/robe-malgache_umsdqi.jpg", publicId: "robe-malgache_umsdqi", ordre: 0, annonceIndex: 16 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271588/sac-artisanal_tuxu0h.jpg", publicId: "sac-artisanal_tuxu0h", ordre: 0, annonceIndex: 18 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271589/t-shirts-lot_tss6je.jpg", publicId: "t-shirts-lot_tss6je", ordre: 0, annonceIndex: 19 },
+    
+    // Loisirs images
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271586/guitare-yamaha_h2m18c.jpg", publicId: "guitare-yamaha_h2m18c", ordre: 0, annonceIndex: 32 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271589/surfboard_hw9kfp.jpg", publicId: "surfboard_hw9kfp", ordre: 0, annonceIndex: 33 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271587/playstation-4_rzfg3d.jpg", publicId: "playstation-4_rzfg3d", ordre: 0, annonceIndex: 34 },
+    { url: "https://res.cloudinary.com/dmyseachc/image/upload/v1776271590/appareil-photo_caxqqk.jpg", publicId: "appareil-photo_caxqqk", ordre: 0, annonceIndex: 36 },
+    
+ 
+  ];
+
+  // Then create images for each annonce
+  for (const imageData of images) {
+    const annonce = createdAnnonces[imageData.annonceIndex];
+    if (annonce) {
+      await prisma.image.create({
+        data: {
+          url: imageData.url,
+          publicId: imageData.publicId,
+          ordre: imageData.ordre,
+          annonceId: annonce.id,
+        },
+      });
+    }
+  }
+
   console.log("🎉 Seeding terminé !");
 }
 
