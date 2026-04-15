@@ -5,6 +5,7 @@ import Image from "next/image"
 import { MapPin, Eye } from "lucide-react"
 import type { AnnonceCard } from "@/lib/annonces"
 import { FavoriteIcon } from "@/components/annonces/FavoriteIcon"
+import { iconeEmoji } from "@/lib/utils/icons"
 
 function formatPrix(prix: number | null, typePrix: string): string {
   if (typePrix === "GRATUIT") return "Maimbo / Gratuit"
@@ -47,8 +48,8 @@ export function AnnonceCard({ annonce, isFavorite = false }: { annonce: AnnonceC
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-5xl bg-gray-50">
-            📷
+          <div className="w-full h-full flex items-center justify-center text-5xl bg-gray-50"  style={{ backgroundColor: annonce.categorie?.couleur ?? "#0ABFBC", opacity: 0.7 }}>
+            <span>{iconeEmoji(annonce.categorie?.icone)}</span>
           </div>
         )}
 

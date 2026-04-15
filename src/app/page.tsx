@@ -4,6 +4,7 @@ import { getAnnoncesWithFavorites, getCategoriesAvecNombre } from "@/lib/annonce
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { Search, TrendingUp, Shield, MapPin } from "lucide-react"
+import { iconeEmoji } from "@/lib/utils/icons"
 
 export default async function HomePage() {
   // Get session for favorites
@@ -185,18 +186,4 @@ export default async function HomePage() {
       </div>
     </div>
   )
-}
-
-function iconeEmoji(icone: string | null): string {
-  const map: Record<string, string> = {
-    Car: "🚗",
-    Home: "🏠",
-    Monitor: "💻",
-    Shirt: "👕",
-    Sofa: "🛋️",
-    Gamepad2: "🎮",
-    Briefcase: "💼",
-    Wrench: "🔧",
-  }
-  return icone ? (map[icone] ?? "📦") : "📦"
 }
