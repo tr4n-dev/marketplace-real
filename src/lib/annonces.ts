@@ -117,6 +117,7 @@ export type AnnonceDetail = Prisma.AnnonceGetPayload<{
         phone: true
       }
     }
+    favorites: true
   }
 }>
 
@@ -293,4 +294,8 @@ export async function getAnnoncesWithFavorites(filtres: FiltresAnnonces = {}, us
     pages: Math.ceil(total / PAR_PAGE),
     page,
   }
+}
+
+export async function getAnnoncesTotalCount () {
+  return await prisma.annonce.count();
 }

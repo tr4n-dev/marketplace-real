@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { AnnonceCard } from "@/components/annonces/AnnonceCard"
-import { getAnnoncesWithFavorites, getCategoriesAvecNombre } from "@/lib/annonces"
+import { getAnnoncesTotalCount, getAnnoncesWithFavorites, getCategoriesAvecNombre } from "@/lib/annonces"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { Search, TrendingUp, Shield, MapPin } from "lucide-react"
@@ -14,7 +14,9 @@ export default async function HomePage() {
   const [{ annonces }, categories] = await Promise.all([
     getAnnoncesWithFavorites({ page: 1 }, userId),
     getCategoriesAvecNombre(),
-  ])
+  ]);
+
+  const total = await getAnnoncesTotalCount();
 
   return (
     <div className="space-y-12">
@@ -68,7 +70,7 @@ export default async function HomePage() {
 
           {/* Stats */}
           <div className="flex items-center justify-center gap-8 mt-8 text-sm text-gray-400">
-            <span><strong className="text-primary">10 000+</strong> annonces</span>
+            <span><strong className="text-primary">{total}</strong> annonces</span>
             <span><strong className="text-turquoise">6</strong> provinces</span>
             <span><strong className="text-primary">Gratuit</strong> à publier</span>
           </div>

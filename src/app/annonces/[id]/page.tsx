@@ -65,6 +65,7 @@ export default async function AnnonceDetailPage({ params }: Props) {
   const estGratuit = annonce.typesPrix === "GRATUIT";
   const prixFormate = formatPrix(annonce.prix, annonce.typesPrix);
   const isOwner = session?.user?.id === annonce.user.id;
+  const isFavorited = session?.user?.id ? annonce.favorites.some(fav => fav.userId === session.user.id) : false;
 
   console.log("donc l'annonce", annonce)
   return (
@@ -179,7 +180,7 @@ export default async function AnnonceDetailPage({ params }: Props) {
                 Membre depuis {formatDate(annonce.user.createdAt)}
               </p>
             </div>
-            <FavoriteIcon annonceId={id}/>
+            <FavoriteIcon annonceId={id} initialLiked={isFavorited}/>
           </div>
 
           {/* Boutons contact */}
