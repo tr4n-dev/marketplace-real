@@ -1,15 +1,26 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, FormEvent } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Search, Menu, X, Plus, MapPin, Heart, ChevronDown, MessageCircle } from "lucide-react"
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { sanitizeSearchQuery } from "@/lib/search";
 
 export function Navbar() {
   const [menuOuvert, setMenuOuvert] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const { data: session, status } = useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const sanitizedQuery = sanitizeSearchQuery(searchQuery);
+    router.push(`/recherche?q=${sanitizedQuery}`);
+  };
 
   return (
     <header className="bg-white border-b-2 border-primary sticky top-0 z-50 shadow-sm">
@@ -33,7 +44,7 @@ export function Navbar() {
         </Link>
 
         {/* Barre de recherche */}
-        <div className="hidden md:flex flex-1 items-center border-2 border-gray-200 focus-within:border-turquoise rounded-xl overflow-hidden transition-colors">
+        <form onSubmit={handleSubmit} className="hidden md:flex flex-1 items-center border-2 border-gray-200 focus-within:border-turquoise rounded-xl overflow-hidden transition-colors">
           <div className="flex items-center gap-1 px-3 text-gray-400 border-r border-gray-200">
             <MapPin className="w-4 h-4" />
             <select className="text-xs outline-none bg-transparent text-gray-600 cursor-pointer">
@@ -48,13 +59,15 @@ export function Navbar() {
           </div>
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher une annonce… Karohy eto"
             className="flex-1 px-4 py-2 text-sm outline-none bg-transparent"
           />
-          <button className="bg-turquoise hover:bg-turquoise-hover transition-colors px-4 py-2.5">
+          <button type="submit" className="bg-turquoise hover:bg-turquoise-hover transition-colors px-4 py-2.5">
             <Search className="w-4 h-4 text-white" />
           </button>
-        </div>
+        </form>
 
         {/* Actions droite */}
         <div className="ml-auto flex items-center gap-3">
@@ -197,8 +210,7 @@ export function Navbar() {
       {/* Menu mobile */}
       {menuOuvert && (
         <div className="md:hidden border-t-2 border-primary bg-white px-4 py-4 flex flex-col gap-3">
-          {
-            session &&
+          {session && (
             <Link
               href="/annonces/creer"
               className="btn-primary text-sm text-center"
@@ -207,19 +219,22 @@ export function Navbar() {
               <Plus className="w-4 h-4 inline mr-2" />
               Déposer une annonce
             </Link>
-          }
-          <div className="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden">
+          )}
+          
+          <form onSubmit={handleSubmit} className="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden">
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Rechercher… Karohy"
               className="flex-1 px-4 py-2 text-sm outline-none"
             />
-            <button className="bg-turquoise px-4 py-2.5">
+            <button type="submit" className="bg-turquoise px-4 py-2.5">
               <Search className="w-4 h-4 text-white" />
             </button>
-          </div>
-          {
-            session ?
+          </form>
+
+          {session ? (
             <>
               <Link
                 href={`/profile/${session.user.id}`}
@@ -247,13 +262,21 @@ export function Navbar() {
                 <div className="w-4 h-4 text-gray-400" />
                 Mes Achats
               </Link>
-              <Link href="/messages" onClick={() => setMenuOuvert(false)}
-                className="flex items-center gap-3 text-sm text-gray-700 py-2">
-                <MessageCircle className="w-4 h-4 text-gray-400" /> Mes messages
+              <Link 
+                href="/messages" 
+                onClick={() => setMenuOuvert(false)}
+                className="flex items-center gap-3 text-sm text-gray-700 py-2"
+              >
+                <MessageCircle className="w-4 h-4 text-gray-400" /> 
+                Mes messages
               </Link>
-              <Link href="/favoris" onClick={() => setMenuOuvert(false)}
-                className="flex items-center gap-3 text-sm text-gray-700 py-2">
-                <Heart className="w-4 h-4 text-gray-400" /> Mes favoris
+              <Link 
+                href="/favoris" 
+                onClick={() => setMenuOuvert(false)}
+                className="flex items-center gap-3 text-sm text-gray-700 py-2"
+              >
+                <Heart className="w-4 h-4 text-gray-400" /> 
+                Mes favoris
               </Link>
               <Link
                 href="/parametres"
@@ -274,7 +297,7 @@ export function Navbar() {
                 Déconnexion
               </button>
             </>
-            :
+          ) : (
             <div className="space-y-2">
               <Link
                 href="/auth/inscription"
@@ -291,8 +314,7 @@ export function Navbar() {
                 Se connecter
               </Link>
             </div>
-          }
-
+          )}
         </div>
       )}
     </header>
