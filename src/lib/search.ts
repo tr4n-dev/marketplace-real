@@ -31,7 +31,7 @@ export function sanitizeSearchQuery(query: string): string {
   
   return query
     .trim()
-    .replace(/[<>\"']/g, '') // Supprime les caractères HTML/JS potentiellement dangereux
+    .replace(/[<>()\"']/g, '') // Supprime les caractères HTML/JS potentiellement dangereux
     .replace(/\s+/g, ' ') // Normalise les espaces
     .slice(0, 100) // Limite la longueur
 }
