@@ -4,7 +4,7 @@
 // Ça nous donne l'autocomplétion et le typage fort partout
 import { prisma } from "./prisma"
 import type { Prisma } from "@prisma/client"
-
+import { extractSearchTerms, calculateRelevanceScore } from "./search"
 
 // Type pour les filtres — correspond exactement aux search params de l'URL
 export type FiltresAnnonces = {
@@ -18,7 +18,6 @@ export type FiltresAnnonces = {
 }
 
 const PAR_PAGE = 20
-
 
 export async function getAnnonces(filtres: FiltresAnnonces = {}) {
   const { recherche, categorie, ville, prixMin, prixMax, typePrix, page = 1 } = filtres
@@ -81,8 +80,29 @@ export async function getAnnonces(filtres: FiltresAnnonces = {}) {
     prisma.annonce.count({ where }),
   ])
 
+  // Apply relevance scoring if there's a search query
+  let scoredAnnonces = annonces
+  if (recherche) {
+    const searchTerms = extractSearchTerms(recherche)
+    scoredAnnonces = annonces
+      .map(annonce => ({
+        ...annonce,
+        score: calculateRelevanceScore(
+          { titre: annonce.titre, description: annonce.description },
+          searchTerms
+        )
+      }))
+      .sort((a, b) => {
+        // Sort by score first, then by date for equal scores
+        if (b.score !== a.score) {
+          return b.score - a.score
+        }
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      })
+  }
+
   return {
-    annonces,
+    annonces: scoredAnnonces,
     total,
     pages: Math.ceil(total / PAR_PAGE),
     page,
@@ -282,11 +302,31 @@ export async function getAnnoncesWithFavorites(filtres: FiltresAnnonces = {}, us
     prisma.annonce.count({ where }),
   ])
 
-  // Transform annonces to include isFavorite boolean
-  const annoncesWithFavoriteStatus = annonces.map(annonce => ({
+  // Transform annonces to include isFavorite boolean and apply relevance scoring
+  let annoncesWithFavoriteStatus = annonces.map(annonce => ({
     ...annonce,
     isFavorite: userId ? annonce.favorites.length > 0 : false,
   }))
+
+  // Apply relevance scoring if there's a search query
+  if (recherche) {
+    const searchTerms = extractSearchTerms(recherche)
+    annoncesWithFavoriteStatus = annoncesWithFavoriteStatus
+      .map(annonce => ({
+        ...annonce,
+        score: calculateRelevanceScore(
+          { titre: annonce.titre, description: annonce.description },
+          searchTerms
+        )
+      }))
+      .sort((a, b) => {
+        // Sort by score first, then by date for equal scores
+        if (b.score !== a.score) {
+          return b.score - a.score
+        }
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      })
+  }
 
   return {
     annonces: annoncesWithFavoriteStatus,
