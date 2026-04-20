@@ -119,7 +119,7 @@ export default function ProfilePage() {
     setSuccess(false);
 
     try {
-      const res = await fetch("/api/profile", {
+      const res = await fetch(`/api/profile/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
